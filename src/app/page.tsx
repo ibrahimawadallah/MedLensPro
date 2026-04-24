@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ScanLine, Hash, ShieldCheck, BookmarkCheck } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { SearchBar } from "@/components/SearchBar";
 
 const POPULAR = [
@@ -13,23 +14,19 @@ const POPULAR = [
   "omeprazole",
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const t = await getTranslations();
   return (
     <div>
       <section className="bg-gradient-to-b from-brand-50 via-white to-white">
         <div className="max-w-3xl mx-auto px-4 pt-12 pb-10 md:pt-20 md:pb-14 text-center">
           <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-brand-700 bg-brand-100 rounded-full px-3 py-1">
-            <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> FDA-approved
-            labels, in plain language
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> {t("home.eyebrow")}
           </p>
           <h1 className="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-slate-900 text-balance">
-            Understand your medicine in a few clear sections.
+            {t("home.title")}
           </h1>
-          <p className="mt-4 text-slate-600 md:text-lg">
-            MedLens turns the official FDA drug label into patient-friendly
-            sections: what it&apos;s for, how to take it, warnings, side
-            effects, and more.
-          </p>
+          <p className="mt-4 text-slate-600 md:text-lg">{t("home.subtitle")}</p>
           <div className="mt-8">
             <SearchBar autoFocus />
           </div>
@@ -38,30 +35,33 @@ export default function HomePage() {
               href="/ndc"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
             >
-              <Hash className="h-4 w-4" aria-hidden /> Look up by NDC
+              <Hash className="h-4 w-4" aria-hidden /> {t("home.lookupByNdc")}
             </Link>
             <Link
               href="/scan"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
             >
-              <ScanLine className="h-4 w-4" aria-hidden /> Scan a barcode
+              <ScanLine className="h-4 w-4" aria-hidden /> {t("home.scanBarcode")}
             </Link>
             <Link
               href="/my-meds"
               className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
             >
-              <BookmarkCheck className="h-4 w-4" aria-hidden /> My meds
+              <BookmarkCheck className="h-4 w-4" aria-hidden /> {t("common.myMeds")}
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="max-w-3xl mx-auto px-4 py-8" aria-labelledby="popular-heading">
+      <section
+        className="max-w-3xl mx-auto px-4 py-8"
+        aria-labelledby="popular-heading"
+      >
         <h2
           id="popular-heading"
           className="text-sm font-semibold uppercase tracking-wider text-slate-600"
         >
-          Popular searches
+          {t("home.popularHeading")}
         </h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {POPULAR.map((name) => (
@@ -82,19 +82,19 @@ export default function HomePage() {
         aria-labelledby="features-heading"
       >
         <h2 id="features-heading" className="sr-only">
-          Why MedLens
+          {t("home.featuresHeading")}
         </h2>
         <Feature
-          title="Plain-language"
-          body="Labels are rewritten with patient-friendly headings (e.g. ‘How to take it’ instead of ‘Dosage and administration’)."
+          title={t("home.features.plain.title")}
+          body={t("home.features.plain.body")}
         />
         <Feature
-          title="Private by design"
-          body="Your saved medications stay on this device. Nothing is sent to any server besides the FDA’s DailyMed service."
+          title={t("home.features.private.title")}
+          body={t("home.features.private.body")}
         />
         <Feature
-          title="Always current"
-          body="Data comes live from DailyMed v2 and reflects the latest FDA-approved label for every product."
+          title={t("home.features.current.title")}
+          body={t("home.features.current.body")}
         />
       </section>
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { BookmarkCheck, BookmarkPlus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { addMyMed, isMyMed, removeMyMed, type SavedMed } from "@/lib/storage";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 export function AddToMyMedsButton({ med }: Props) {
   const [saved, setSaved] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const t = useTranslations("drug");
 
   useEffect(() => {
     setMounted(true);
@@ -25,7 +27,7 @@ export function AddToMyMedsButton({ med }: Props) {
         className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500"
       >
         <BookmarkPlus className="h-4 w-4" aria-hidden />
-        Save to My meds
+        {t("save")}
       </button>
     );
   }
@@ -53,12 +55,12 @@ export function AddToMyMedsButton({ med }: Props) {
       {saved ? (
         <>
           <BookmarkCheck className="h-4 w-4" aria-hidden />
-          Saved
+          {t("saved")}
         </>
       ) : (
         <>
           <BookmarkPlus className="h-4 w-4" aria-hidden />
-          Save to My meds
+          {t("save")}
         </>
       )}
     </button>

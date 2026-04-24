@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { searchSpls } from "@/lib/dailymed";
 import { SearchBar } from "@/components/SearchBar";
 import { splitSplTitle } from "@/lib/format";
@@ -14,11 +15,13 @@ interface Props {
 }
 
 export async function generateMetadata({ searchParams }: Props) {
+  const t = await getTranslations("search");
   const q = searchParams.q?.trim();
-  return { title: q ? `Search: ${q}` : "Search medications" };
+  return { title: q ? t("metaTitleWithQuery", { q }) : t("metaTitle") };
 }
 
 export default async function SearchPage({ searchParams }: Props) {
+  const t = await getTranslations("search");
   const q = searchParams.q?.trim() ?? "";
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
   const nameType =
@@ -33,7 +36,7 @@ export default async function SearchPage({ searchParams }: Props) {
       </div>
 
       {!q ? (
-        <p className="text-slate-600">Type a medicine name above to begin.</p>
+        <p className="text-slate-600">{t("prompt")}</p>
       ) : (
         <SearchResults q={q} page={page} nameType={nameType} />
       )}
@@ -50,13 +53,14 @@ async function SearchResults({
   page: number;
   nameType: "generic" | "brand" | "both";
 }) {
+  const t = await getTranslations("search");
   let data;
   try {
     data = await searchSpls(q, { page, nameType, pageSize: 20 });
   } catch (e) {
     return (
       <p className="text-red-700">
-        Unable to reach DailyMed. {(e as Error).message}
+        {t("error", { message: (e as Error).message })}
       </p>
     );
   }
@@ -64,8 +68,10 @@ async function SearchResults({
   if (data.data.length === 0) {
     return (
       <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
-        No medicines matched <strong>{q}</strong>. Check the spelling, or try a
-        generic or brand name.
+        {t.rich("empty", {
+          q,
+          strong: (chunks) => <strong>{chunks}</strong>,
+        })}
       </div>
     );
   }
@@ -75,9 +81,15 @@ async function SearchResults({
   return (
     <div>
       <p className="text-sm text-slate-500 mb-4">
-        {meta.total_elements.toLocaleString()} results for{" "}
-        <strong className="text-slate-700">{q}</strong> · page {meta.current_page}{" "}
-        of {meta.total_pages}
+        {t.rich("meta", {
+          count: meta.total_elements,
+          q,
+          page: meta.current_page,
+          total: meta.total_pages,
+          strong: (chunks) => (
+            <strong className="text-slate-700">{chunks}</strong>
+          ),
+        })}
       </p>
       <ul className="space-y-3">
         {data.data.map((spl) => {
@@ -117,7 +129,7 @@ async function SearchResults({
             }&type=${nameType}`}
             className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm hover:bg-slate-50"
           >
-            ← Previous
+            {t("previous")}
           </Link>
         ) : (
           <span />
@@ -129,7 +141,7 @@ async function SearchResults({
             }&type=${nameType}`}
             className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm hover:bg-slate-50"
           >
-            Next →
+            {t("next")}
           </Link>
         ) : (
           <span />

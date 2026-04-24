@@ -1,0 +1,151 @@
+{
+  "common": {
+    "brand": "MedLens",
+    "skipToContent": "Skip to main content",
+    "primaryNav": "Primary",
+    "search": "Search",
+    "myMeds": "My meds",
+    "loading": "Loading…",
+    "back": "Back",
+    "backToSearch": "Back to search",
+    "backToHome": "Back to home",
+    "language": "Language",
+    "tryAgain": "Try again",
+    "reference": "Reference: {digest}",
+    "english": "English",
+    "arabic": "العربية"
+  },
+  "footer": {
+    "credit": "MedLens is an independent, patient-friendly reader for FDA drug labels. Label data is provided by the U.S. National Library of Medicine <link>DailyMed</link> service.",
+    "disclaimer": "This information is for educational purposes only and is not a substitute for the advice of a healthcare professional. Always read the full label and talk to your doctor or pharmacist before taking any medication."
+  },
+  "home": {
+    "eyebrow": "FDA-approved labels, in plain language",
+    "title": "Understand your medicine in a few clear sections.",
+    "subtitle": "MedLens turns the official FDA drug label into patient-friendly sections: what it's for, how to take it, warnings, side effects, and more.",
+    "searchPlaceholder": "Search a medicine by name (e.g. ibuprofen, Lipitor)",
+    "searchAriaLabel": "Search for a medicine",
+    "searching": "Searching…",
+    "lookupByNdc": "Look up by NDC",
+    "scanBarcode": "Scan a barcode",
+    "popularHeading": "Popular searches",
+    "featuresHeading": "Why MedLens",
+    "features": {
+      "plain": {
+        "title": "Plain-language",
+        "body": "Labels are rewritten with patient-friendly headings (e.g. 'How to take it' instead of 'Dosage and administration')."
+      },
+      "private": {
+        "title": "Private by design",
+        "body": "Your saved medications stay on this device. Nothing is sent to any server besides the FDA's DailyMed service."
+      },
+      "current": {
+        "title": "Always current",
+        "body": "Data comes live from DailyMed v2 and reflects the latest FDA-approved label for every product."
+      }
+    }
+  },
+  "search": {
+    "metaTitle": "Search medications",
+    "metaTitleWithQuery": "Search: {q}",
+    "prompt": "Type a medicine name above to begin.",
+    "error": "Unable to reach DailyMed. {message}",
+    "empty": "No medicines matched <strong>{q}</strong>. Check the spelling, or try a generic or brand name.",
+    "meta": "{count, number} results for <strong>{q}</strong> · page {page} of {total}",
+    "previous": "← Previous",
+    "next": "Next →"
+  },
+  "ndc": {
+    "metaTitle": "Look up by NDC",
+    "heading": "Look up a medicine by its NDC code",
+    "intro": "The National Drug Code (NDC) is printed on most US medication packaging. It's usually three groups of numbers, like <code>0002-4462-30</code>.",
+    "formLabel": "NDC lookup",
+    "inputLabel": "Enter a National Drug Code",
+    "placeholder": "e.g. 0002-4462-30",
+    "submit": "Look up",
+    "invalid": "That doesn't look like a valid NDC. Enter 8–13 digits (e.g. <code>0002-4462-30</code>).",
+    "labelerMatch": "No exact match — showing products from the same labeler:",
+    "exactMatch": "Matches for",
+    "empty": "No medicines found for that NDC in DailyMed."
+  },
+  "scan": {
+    "metaTitle": "Scan a medication barcode",
+    "heading": "Scan your medicine's barcode",
+    "intro": "Point your camera at the barcode on the medication packaging. We'll try to extract the National Drug Code (NDC) and look it up in DailyMed. Works best on recent Chrome / Edge on Android and on iOS 17+.",
+    "privacyNote": "Your camera feed is processed entirely on your device — nothing is uploaded.",
+    "checkingSupport": "Checking camera support…",
+    "notSupported": "Barcode scanning isn't supported on this browser. You can still type the NDC manually on the <link>NDC lookup page</link>.",
+    "start": "Start camera",
+    "stop": "Stop",
+    "cameraOff": "Camera is off",
+    "videoAria": "Barcode scanner camera preview",
+    "detected": "Detected: {code}"
+  },
+  "drug": {
+    "fallbackName": "Medication",
+    "genericName": "Generic name: {name}",
+    "activeIngredientOne": "Active ingredient",
+    "activeIngredientMany": "Active ingredients",
+    "fullLabel": "Full label on DailyMed",
+    "pdf": "PDF",
+    "zip": "Full label (ZIP)",
+    "noPatientSections": "We couldn't extract patient-friendly sections from this label. You can still read the full label on DailyMed using the link above.",
+    "packageCodes": "Package codes (NDC)",
+    "fullPrescribing": "Full prescribing information (for healthcare professionals)",
+    "boxedWarning": "Boxed warning",
+    "contentLanguageNote": "The clinical content below is shown in the official English text from the FDA label. We don't auto-translate medical information — please ask your pharmacist if anything is unclear.",
+    "save": "Save to My meds",
+    "saved": "Saved"
+  },
+  "myMeds": {
+    "metaTitle": "My medications",
+    "heading": "My medications",
+    "intro": "The list below is stored only on this device — we never send it to a server.",
+    "empty": "You haven't saved any medications yet. Open a drug label and tap <strong>Save to My meds</strong>.",
+    "remove": "Remove {name}"
+  },
+  "errors": {
+    "heading": "Something went wrong",
+    "body": "We couldn't load that page. The DailyMed service may be temporarily unavailable, or the page you were looking for doesn't exist.",
+    "notFoundHeading": "Not found",
+    "notFoundBody": "We couldn't find that medicine in DailyMed.",
+    "globalHeading": "MedLens ran into a problem",
+    "globalBody": "Please try again. If this keeps happening, open the DailyMed site directly."
+  },
+  "offline": {
+    "metaTitle": "Offline",
+    "heading": "You're offline",
+    "body": "MedLens needs an internet connection to fetch the latest drug labels from DailyMed. Your saved medications on <link>My meds</link> are still available."
+  },
+  "sections": {
+    "additional": "Additional prescribing information",
+    "34066-1": { "title": "Serious warning (boxed)", "hint": "The FDA's most prominent safety warning." },
+    "34067-9": { "title": "What this medicine is for", "hint": "The uses this medicine is approved for." },
+    "50567-7": { "title": "What this medicine is for", "hint": "Over-the-counter use." },
+    "34068-7": { "title": "How to take it", "hint": "Dosage and administration instructions." },
+    "50580-0": { "title": "How to take it" },
+    "43678-2": { "title": "Available doses and forms" },
+    "34070-3": { "title": "Do not use if…", "hint": "Contraindications." },
+    "50565-1": { "title": "Do not use if…" },
+    "50566-9": { "title": "Ask a doctor before use if…" },
+    "50568-5": { "title": "Ask a doctor or pharmacist before use if…" },
+    "34073-7": { "title": "Drug interactions" },
+    "43685-7": { "title": "Important warnings and precautions" },
+    "34084-4": { "title": "Possible side effects" },
+    "50570-1": { "title": "Stop use and talk to a doctor if…" },
+    "42228-7": { "title": "Use during pregnancy" },
+    "34080-2": { "title": "Use while breastfeeding" },
+    "34081-0": { "title": "Use in children" },
+    "34082-8": { "title": "Use in older adults" },
+    "43684-0": { "title": "Use in specific groups" },
+    "34088-5": { "title": "If you take too much (overdose)" },
+    "44425-7": { "title": "Storage and handling" },
+    "34076-0": { "title": "Patient information" },
+    "42231-1": { "title": "Medication Guide" },
+    "68498-5": { "title": "Medication Guide" },
+    "69719-3": { "title": "Patient package insert" },
+    "34089-3": { "title": "What's in this medicine" },
+    "51945-4": { "title": "Package label" },
+    "34069-5": { "title": "How it's supplied" }
+  }
+}
