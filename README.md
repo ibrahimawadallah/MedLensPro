@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MedLens — Patient-friendly DailyMed reader
 
-## Getting Started
+MedLens turns the official FDA-approved drug labels (SPL documents) from the
+U.S. National Library of Medicine's [DailyMed](https://dailymed.nlm.nih.gov/)
+service into a clean, patient-first reading experience.
 
-First, run the development server:
+## Features
+
+- **Drug search** — search by generic or brand name via the `/drugnames` and
+  `/spls` endpoints.
+- **NDC lookup** — paste or scan a National Drug Code and jump straight to the
+  matching label.
+- **Barcode scanner** — uses the browser's `BarcodeDetector` API to read the
+  NDC from medication packaging (no native build required).
+- **Patient-friendly label viewer** — the SPL XML is parsed server-side and
+  re-ordered into patient-priority sections (_What it&apos;s for_, _How to take it_,
+  _Before you use_, _Warnings_, _Side effects_, _Storage_, …). Technical
+  prescribing sections are collapsed under "Full prescribing information".
+- **Pill & packaging images** — pulled from `/spls/{setid}/media`.
+- **PDF / ZIP downloads** — links to the official DailyMed archives.
+- **My meds** — a local medication list stored in `localStorage`. No PHI is
+  ever uploaded to any server.
+- **Installable PWA** with offline-friendly caching of DailyMed responses.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then visit [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` — start the Next.js dev server
+- `npm run build` / `npm start` — production build + serve
+- `npm run lint` — ESLint (next/core-web-vitals)
+- `npm run typecheck` — TypeScript `--noEmit`
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+- **Next.js 14** App Router, TypeScript, Tailwind CSS.
+- Data fetching goes through small helpers in [`src/lib/dailymed.ts`](src/lib/dailymed.ts).
+  Responses are cached at the edge via Next's `revalidate` field (1–24h
+  depending on the endpoint) which acts as the MVP caching layer in place of
+  a dedicated Redis.
+- SPL XML is parsed by [`src/lib/spl.ts`](src/lib/spl.ts) using
+  [`fast-xml-parser`](https://github.com/NaturalIntelligence/fast-xml-parser)
+  and rendered back to HTML using a conservative safe-subset (paragraphs,
+  lists, tables, bold/italic content, links).
+- LOINC section codes are mapped to patient-friendly headings in
+  [`src/lib/sections.ts`](src/lib/sections.ts).
+- The user's saved medications live in `localStorage`
+  ([`src/lib/storage.ts`](src/lib/storage.ts)) — nothing touches a server.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Data & Disclaimer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Label data is © U.S. National Library of Medicine and is served via the
+DailyMed REST API v2. This application is for educational purposes only and
+is not a substitute for medical advice. Always read the full label and talk
+to a healthcare professional before taking any medication.

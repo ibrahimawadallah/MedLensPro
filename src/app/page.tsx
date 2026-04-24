@@ -1,101 +1,102 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ScanLine, Hash, ShieldCheck, BookmarkCheck } from "lucide-react";
+import { SearchBar } from "@/components/SearchBar";
 
-export default function Home() {
+const POPULAR = [
+  "ibuprofen",
+  "acetaminophen",
+  "aspirin",
+  "amoxicillin",
+  "lisinopril",
+  "metformin",
+  "atorvastatin",
+  "omeprazole",
+];
+
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      <section className="bg-gradient-to-b from-brand-50 via-white to-white">
+        <div className="max-w-3xl mx-auto px-4 pt-12 pb-10 md:pt-20 md:pb-14 text-center">
+          <p className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wider text-brand-700 bg-brand-100 rounded-full px-3 py-1">
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> FDA-approved
+            labels, in plain language
+          </p>
+          <h1 className="mt-4 text-3xl md:text-5xl font-semibold tracking-tight text-slate-900 text-balance">
+            Understand your medicine in a few clear sections.
+          </h1>
+          <p className="mt-4 text-slate-600 md:text-lg">
+            MedLens turns the official FDA drug label into patient-friendly
+            sections: what it&apos;s for, how to take it, warnings, side
+            effects, and more.
+          </p>
+          <div className="mt-8">
+            <SearchBar autoFocus />
+          </div>
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/ndc"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <Hash className="h-4 w-4" aria-hidden /> Look up by NDC
+            </Link>
+            <Link
+              href="/scan"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <ScanLine className="h-4 w-4" aria-hidden /> Scan a barcode
+            </Link>
+            <Link
+              href="/my-meds"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+            >
+              <BookmarkCheck className="h-4 w-4" aria-hidden /> My meds
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      <section className="max-w-3xl mx-auto px-4 py-8">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+          Popular searches
+        </h2>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {POPULAR.map((name) => (
+            <li key={name}>
+              <Link
+                href={`/search?q=${encodeURIComponent(name)}`}
+                className="inline-block rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-700 hover:border-brand-300 hover:text-brand-700"
+              >
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="max-w-3xl mx-auto px-4 pb-16 grid gap-4 md:grid-cols-3">
+        <Feature
+          title="Plain-language"
+          body="Labels are rewritten with patient-friendly headings (e.g. ‘How to take it’ instead of ‘Dosage and administration’)."
+        />
+        <Feature
+          title="Private by design"
+          body="Your saved medications stay on this device. Nothing is sent to any server besides the FDA’s DailyMed service."
+        />
+        <Feature
+          title="Always current"
+          body="Data comes live from DailyMed v2 and reflects the latest FDA-approved label for every product."
+        />
+      </section>
+    </div>
+  );
+}
+
+function Feature({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <h3 className="font-semibold text-slate-900">{title}</h3>
+      <p className="mt-1 text-sm text-slate-600">{body}</p>
     </div>
   );
 }

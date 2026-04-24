@@ -9,8 +9,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        brand: {
+          50: "#eef6ff",
+          100: "#d9eaff",
+          200: "#bcdaff",
+          300: "#8ec3ff",
+          400: "#59a3ff",
+          500: "#2f82ff",
+          600: "#1b64eb",
+          700: "#164fc2",
+          800: "#17449a",
+          900: "#193c7a",
+        },
+      },
+      fontFamily: {
+        sans: ["system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],
       },
     },
   },
