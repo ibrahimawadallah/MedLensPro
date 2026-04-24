@@ -13,9 +13,9 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
+import { AuthProvider } from "@/components/AuthProvider";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
 const notoSansArabic = Noto_Sans_Arabic({
@@ -137,7 +137,7 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProvider>
+          <AuthProvider>
             <NextIntlClientProvider locale={locale} messages={messages}>
             <a
               href="#main"
@@ -261,11 +261,11 @@ export default async function RootLayout({
               </div>
             </footer>
           </NextIntlClientProvider>
-          </SessionProvider>
-          <GoogleAnalytics />
-          <VercelAnalytics />
-          <FeedbackWidget />
+          </AuthProvider>
         </ThemeProvider>
+        <GoogleAnalytics />
+        <VercelAnalytics />
+        <FeedbackWidget />
       </body>
     </html>
   );
