@@ -12,6 +12,7 @@ import { WebSiteStructuredData, OrganizationStructuredData } from "@/components/
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
@@ -37,6 +38,22 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s · ${t("common.brand")}`,
     },
     description,
+    keywords: [
+      "drug information",
+      "medication guide",
+      "FDA labels",
+      "patient education",
+      "drug safety",
+      "prescription information",
+      "over-the-counter medicines",
+      "drug interactions",
+      "medication side effects",
+      "Arabic drug information",
+      "معلومات الأدوية",
+      "دليل الأدوية",
+      "تعليمات المريض",
+      "سلامة الأدوية",
+    ],
     applicationName: t("common.brand"),
     appleWebApp: {
       capable: true,
@@ -58,6 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: "/",
       images: [{ url: "/icon-512.png", width: 512, height: 512, alt: t("common.brand") }],
+      locale: "en_US",
     },
     twitter: {
       card: "summary",
@@ -66,6 +84,14 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ["/icon-512.png"],
     },
     formatDetection: { telephone: false },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
   };
 }
 
@@ -238,6 +264,7 @@ export default async function RootLayout({
           </SessionProvider>
           <GoogleAnalytics />
           <VercelAnalytics />
+          <FeedbackWidget />
         </ThemeProvider>
       </body>
     </html>
