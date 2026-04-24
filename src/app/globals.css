@@ -3,21 +3,68 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f9fc;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --brand: #1b64eb;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* SPL-rendered content tweaks */
+.spl-content h1,
+.spl-content h2,
+.spl-content h3 {
+  font-weight: 600;
+  margin: 0.75rem 0 0.25rem;
+}
+.spl-content p {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+.spl-content ul,
+.spl-content ol {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+  list-style: disc;
+}
+.spl-content ol {
+  list-style: decimal;
+}
+.spl-content table {
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  width: 100%;
+  font-size: 0.9rem;
+}
+.spl-content th,
+.spl-content td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  vertical-align: top;
+}
+.spl-content a {
+  color: var(--brand);
+  text-decoration: underline;
+}
+.spl-content sub {
+  vertical-align: sub;
+  font-size: 0.8em;
+}
+.spl-content sup {
+  vertical-align: super;
+  font-size: 0.8em;
 }
 
 @layer utilities {
