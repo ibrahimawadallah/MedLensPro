@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ScanLine, Hash, ShieldCheck, BookmarkCheck, Heart, Lock, Zap, Globe, Smartphone, Users, Sparkles, ArrowRight, ChevronDown } from "lucide-react";
+import { ScanLine, Hash, ShieldCheck, Heart, Lock, Zap, Globe, Smartphone, Users, Sparkles, ArrowRight, ChevronDown } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { SearchBar } from "@/components/SearchBar";
+import { HeroCTAButtons } from "@/components/HeroCTAButtons";
 
 const POPULAR = [
   "ibuprofen",
@@ -84,29 +85,7 @@ export default async function HomePage() {
           </div>
 
           {/* Animated Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-            <Link
-              href="/ndc"
-              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
-            >
-              <Hash className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              {t("home.lookupByNdc")}
-            </Link>
-            <Link
-              href="/scan"
-              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
-            >
-              <ScanLine className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              {t("home.scanBarcode")}
-            </Link>
-            <Link
-              href="/my-meds"
-              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-6 py-4 text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
-            >
-              <BookmarkCheck className="h-5 w-5 group-hover:scale-110 transition-transform" />
-              {t("common.myMeds")}
-            </Link>
-          </div>
+          <HeroCTAButtons />
 
           {/* Animated Scroll Indicator */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
