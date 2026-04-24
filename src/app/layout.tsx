@@ -25,7 +25,7 @@ const notoSansArabic = Noto_Sans_Arabic({
   preload: true,
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://medlens.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://med.medtechai.net";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
