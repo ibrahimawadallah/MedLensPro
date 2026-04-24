@@ -145,6 +145,24 @@
       "signIn": "Sign in"
     }
   },
+  "popularDrugs": {
+    "ibuprofen": "Ibuprofen",
+    "acetaminophen": "Acetaminophen",
+    "aspirin": "Aspirin",
+    "amoxicillin": "Amoxicillin",
+    "lisinopril": "Lisinopril",
+    "metformin": "Metformin",
+    "atorvastatin": "Atorvastatin",
+    "omeprazole": "Omeprazole",
+    "panadol": "Panadol",
+    "brufen": "Brufen",
+    "augmentin": "Augmentin",
+    "glucophage": "Glucophage",
+    "lipitor": "Lipitor",
+    "losartan": "Losartan",
+    "paracetamol": "Paracetamol",
+    "amoxil": "Amoxil"
+  },
   "sections": {
     "additional": "Additional prescribing information",
     "34066-1": { "title": "Serious warning (boxed)", "hint": "The FDA's most prominent safety warning." },

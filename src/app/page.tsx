@@ -12,6 +12,14 @@ const POPULAR = [
   "metformin",
   "atorvastatin",
   "omeprazole",
+  "panadol",
+  "brufen",
+  "augmentin",
+  "glucophage",
+  "lipitor",
+  "losartan",
+  "paracetamol",
+  "amoxil",
 ];
 
 export default async function HomePage() {

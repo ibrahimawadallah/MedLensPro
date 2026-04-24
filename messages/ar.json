@@ -145,6 +145,24 @@
       "signIn": "تسجيل الدخول"
     }
   },
+  "popularDrugs": {
+    "ibuprofen": "إيبوبروفين",
+    "acetaminophen": "أسيتامينوفين",
+    "aspirin": "أسبرين",
+    "amoxicillin": "أموكسيسيلين",
+    "lisinopril": "ليسينوبريل",
+    "metformin": "ميتفورمين",
+    "atorvastatin": "أتورفاستاتين",
+    "omeprazole": "أوميبرازول",
+    "panadol": "بانادول",
+    "brufen": "بروفين",
+    "augmentin": "أوجمنتين",
+    "glucophage": "جلوكوفاج",
+    "lipitor": "ليبيتور",
+    "losartan": "لوسارتان",
+    "paracetamol": "باراسيتامول",
+    "amoxil": "أموكسيل"
+  },
   "sections": {
     "additional": "معلومات وصف إضافية",
     "34066-1": { "title": "تحذير خطير (مؤطر)", "hint": "أبرز تحذير من FDA بشأن السلامة." },

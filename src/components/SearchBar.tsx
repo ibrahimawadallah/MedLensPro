@@ -65,6 +65,14 @@ const POPULAR_SEARCHES = [
   "metformin",
   "atorvastatin",
   "omeprazole",
+  "panadol",
+  "brufen",
+  "augmentin",
+  "glucophage",
+  "lipitor",
+  "losartan",
+  "paracetamol",
+  "amoxil",
 ];
 
 export function SearchBar({

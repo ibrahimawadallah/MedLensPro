@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { Search, BookmarkCheck } from "lucide-react";
+import { Search, BookmarkCheck, Facebook, Twitter, Linkedin } from "lucide-react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
@@ -8,6 +8,8 @@ import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AuthButton } from "@/components/AuthButton";
+import { WebSiteStructuredData, OrganizationStructuredData } from "@/components/StructuredData";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
@@ -88,6 +90,17 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://dailymed.nlm.nih.gov" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <WebSiteStructuredData
+          name={t("common.brand")}
+          url={SITE_URL}
+          description={t("home.subtitle")}
+          alternateName="MedLens Pro"
+        />
+        <OrganizationStructuredData
+          name={t("common.brand")}
+          url={SITE_URL}
+          description="Patient-friendly drug information platform"
+        />
       </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider
@@ -150,22 +163,61 @@ export default async function RootLayout({
               className="border-t border-[var(--border)] py-8 text-sm text-slate-600 dark:text-slate-400"
               style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom))" }}
             >
-              <div className="max-w-5xl mx-auto px-4 space-y-2">
-                <p>
-                  {t.rich("footer.credit", {
-                    link: (chunks) => (
-                      <a
-                        className="text-brand-700 dark:text-brand-400 underline"
-                        href="https://dailymed.nlm.nih.gov/"
+              <div className="max-w-5xl mx-auto px-4 space-y-6">
+                <div className="flex flex-col md:flex-row gap-6 items-start justify-between">
+                  <div className="space-y-2 flex-1">
+                    <p>
+                      {t.rich("footer.credit", {
+                        link: (chunks) => (
+                          <a
+                            className="text-brand-700 dark:text-brand-400 underline"
+                            href="https://dailymed.nlm.nih.gov/"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {chunks}
+                          </a>
+                        ),
+                      })}
+                    </p>
+                    <p className="text-xs">{t("footer.disclaimer")}</p>
+                  </div>
+                  <div className="space-y-2 w-full md:w-auto">
+                    <p className="font-medium text-slate-900 dark:text-slate-100 mb-2">
+                      Stay informed
+                    </p>
+                    <NewsletterSignup />
+                    <div className="flex items-center gap-2 pt-2">
+                      <Link
+                        href="https://twitter.com/medlenspro"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                        aria-label="Twitter"
                       >
-                        {chunks}
-                      </a>
-                    ),
-                  })}
-                </p>
-                <p className="text-xs">{t("footer.disclaimer")}</p>
+                        <Twitter className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href="https://linkedin.com/company/medlenspro"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                        aria-label="LinkedIn"
+                      >
+                        <Linkedin className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href="https://facebook.com/medlenspro"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                        aria-label="Facebook"
+                      >
+                        <Facebook className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             </footer>
           </NextIntlClientProvider>
