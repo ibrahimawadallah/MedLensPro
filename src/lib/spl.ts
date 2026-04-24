@@ -146,7 +146,8 @@ function renderNarrative(list: Node[] | undefined): string {
       }
       case "linkHtml": {
         const href = a["href"] ?? "#";
-        out += `<a href="${escapeHtml(href)}" target="_blank" rel="noreferrer">${renderNarrative(inner)}</a>`;
+        const safeHref = /^(https?:|mailto:|#|\/)/i.test(href) ? href : "#";
+        out += `<a href="${escapeHtml(safeHref)}" target="_blank" rel="noreferrer">${renderNarrative(inner)}</a>`;
         break;
       }
       case "sub":
@@ -300,7 +301,7 @@ export function parseSplXml(xml: string, setid: string): ParsedSpl {
         if (numA["value"]) {
           strength = `${numA["value"]} ${numA["unit"] ?? ""}`.trim();
           if (denA["value"] && denA["value"] !== "1") {
-            strength += ` / ${denA["value"]} ${denA["unit"] ?? ""}`.trim();
+            strength += " / " + `${denA["value"]} ${denA["unit"] ?? ""}`.trim();
           }
         }
       }
