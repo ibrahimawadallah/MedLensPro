@@ -95,7 +95,9 @@
     "boxedWarning": "Boxed warning",
     "contentLanguageNote": "The clinical content below is shown in the official English text from the FDA label. We don't auto-translate medical information — please ask your pharmacist if anything is unclear.",
     "save": "Save to My meds",
-    "saved": "Saved"
+    "saved": "Saved",
+    "mediaHeading": "What it looks like",
+    "mediaIntro": "Photos of the product and/or packaging supplied by the manufacturer."
   },
   "myMeds": {
     "metaTitle": "My medications",

@@ -1,22 +1,22 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import type { MediaItem } from "@/lib/dailymed";
 
 interface Props {
   media: MediaItem[];
 }
 
-export function MediaGallery({ media }: Props) {
+export async function MediaGallery({ media }: Props) {
   const images = media.filter((m) => m.mime_type?.startsWith("image/"));
   if (images.length === 0) return null;
+  const t = await getTranslations("drug");
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5">
       <h2 className="text-base md:text-lg font-semibold text-slate-900 mb-3">
-        What it looks like
+        {t("mediaHeading")}
       </h2>
-      <p className="text-sm text-slate-500 mb-4">
-        Photos of the product and/or packaging supplied by the manufacturer.
-      </p>
+      <p className="text-sm text-slate-500 mb-4">{t("mediaIntro")}</p>
       <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {images.map((m) => (
           <li
