@@ -14,6 +14,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
 import { AuthProvider } from "@/components/AuthProvider";
+import { SentryClient } from "@/components/SentryClient";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
@@ -263,6 +264,7 @@ export default async function RootLayout({
           </NextIntlClientProvider>
           </AuthProvider>
         </ThemeProvider>
+        <SentryClient />
         <GoogleAnalytics />
         <VercelAnalytics />
         <FeedbackWidget />
