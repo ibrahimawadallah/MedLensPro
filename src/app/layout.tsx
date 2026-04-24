@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import { Pill, Search, BookmarkCheck } from "lucide-react";
+import { Search, BookmarkCheck } from "lucide-react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
@@ -104,7 +104,9 @@ export default async function RootLayout({
                   href="/"
                   className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                 >
-                  <Pill className="h-5 w-5" aria-hidden />
+                  <div className="h-6 w-6 bg-brand-600 dark:bg-brand-500 rounded-full flex items-center justify-center text-white text-xs font-bold" aria-hidden>
+                    ML
+                  </div>
                   {t("common.brand")}
                 </Link>
                 <nav
