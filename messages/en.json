@@ -13,7 +13,10 @@
     "tryAgain": "Try again",
     "reference": "Reference: {digest}",
     "english": "English",
-    "arabic": "العربية"
+    "arabic": "العربية",
+    "toggleTheme": "Toggle theme",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   },
   "footer": {
     "credit": "MedLens is an independent, patient-friendly reader for FDA drug labels. Label data is provided by the U.S. National Library of Medicine <link>DailyMed</link> service.",

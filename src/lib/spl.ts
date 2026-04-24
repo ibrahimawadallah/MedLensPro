@@ -334,10 +334,12 @@ export function parseSplXml(xml: string, setid: string): ParsedSpl {
   }
   patientSections.sort((a, b) => a.priority - b.priority);
 
-  // Dedupe by patientTitle + content to keep the list clean
+  // Dedupe by dedup group (priority) + content so that codes which map to the
+  // same patient-friendly title (e.g. Rx "Indications" 34067-9 and OTC "Uses"
+  // 50567-7 — both rendered as "What this medicine is for") are collapsed.
   const seen = new Set<string>();
   const dedupedPatientSections = patientSections.filter((s) => {
-    const key = `${s.code ?? ""}::${s.preview}`;
+    const key = `${s.priority}::${s.preview}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
