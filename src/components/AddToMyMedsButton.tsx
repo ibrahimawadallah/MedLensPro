@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BookmarkCheck, BookmarkPlus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { addMyMed, isMyMed, removeMyMed, type SavedMed } from "@/lib/storage";
+import { trackEvent, analyticsEvents } from "@/lib/analytics";
 
 interface Props {
   med: Omit<SavedMed, "savedAt">;
@@ -39,9 +40,11 @@ export function AddToMyMedsButton({ med }: Props) {
         if (saved) {
           removeMyMed(med.setid);
           setSaved(false);
+          trackEvent(analyticsEvents.drug.removed(med.setid, med.title));
         } else {
           addMyMed({ ...med, savedAt: new Date().toISOString() });
           setSaved(true);
+          trackEvent(analyticsEvents.drug.saved(med.setid, med.title));
         }
       }}
       aria-pressed={saved}

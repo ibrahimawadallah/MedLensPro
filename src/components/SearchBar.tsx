@@ -5,6 +5,7 @@ import { useState, useTransition, useEffect, useRef } from "react";
 import { Search, Mic, X, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { pushRecentSearch, getRecentSearches } from "@/lib/storage";
+import { trackEvent, analyticsEvents } from "@/lib/analytics";
 
 // Type declaration for Web Speech API
 declare global {
@@ -160,6 +161,7 @@ export function SearchBar({
     pushRecentSearch(q);
     setRecentSearches(getRecentSearches());
     setShowSuggestions(false);
+    trackEvent(analyticsEvents.search.performed(q));
     start(() => {
       router.push(`/search?q=${encodeURIComponent(q)}`);
     });
@@ -170,6 +172,7 @@ export function SearchBar({
     setShowSuggestions(false);
     pushRecentSearch(suggestion);
     setRecentSearches(getRecentSearches());
+    trackEvent(analyticsEvents.search.suggestion_clicked(suggestion));
     start(() => {
       router.push(`/search?q=${encodeURIComponent(suggestion)}`);
     });
@@ -206,6 +209,7 @@ export function SearchBar({
     if (recognitionRef.current) {
       recognitionRef.current.start();
       setIsListening(true);
+      trackEvent(analyticsEvents.search.voice_search());
     }
   }
 

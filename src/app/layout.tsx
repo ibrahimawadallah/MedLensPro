@@ -10,6 +10,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { AuthButton } from "@/components/AuthButton";
 import { WebSiteStructuredData, OrganizationStructuredData } from "@/components/StructuredData";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { VercelAnalytics } from "@/components/VercelAnalytics";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
@@ -147,6 +149,18 @@ export default async function RootLayout({
                   >
                     <BookmarkCheck className="h-4 w-4" aria-hidden /> {t("common.myMeds")}
                   </Link>
+                  <Link
+                    href="/faq"
+                    className="hidden sm:flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                  >
+                    FAQ
+                  </Link>
+                  <Link
+                    href="/resources"
+                    className="hidden sm:flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                  >
+                    Resources
+                  </Link>
                   <div className="flex items-center gap-2">
                     <AuthButton />
                     <ThemeToggle />
@@ -222,6 +236,8 @@ export default async function RootLayout({
             </footer>
           </NextIntlClientProvider>
           </SessionProvider>
+          <GoogleAnalytics />
+          <VercelAnalytics />
         </ThemeProvider>
       </body>
     </html>
