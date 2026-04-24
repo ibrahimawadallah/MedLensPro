@@ -27,6 +27,13 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+function putIfOk(req, res) {
+  if (res && res.ok && res.type === "basic") {
+    const copy = res.clone();
+    caches.open(CACHE_NAME).then((c) => c.put(req, copy));
+  }
+}
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
@@ -41,14 +48,22 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then((c) => c.put(req, copy));
+          putIfOk(req, res);
           return res;
         })
         .catch(() =>
-          caches
-            .match(req)
-            .then((cached) => cached || caches.match(OFFLINE_URL)),
+          caches.match(req).then(
+            (cached) =>
+              cached ||
+              caches.match(OFFLINE_URL).then(
+                (offline) =>
+                  offline ||
+                  new Response("Offline", {
+                    status: 503,
+                    headers: { "Content-Type": "text/plain" },
+                  }),
+              ),
+          ),
         ),
     );
     return;
@@ -60,12 +75,21 @@ self.addEventListener("fetch", (event) => {
       caches.match(req).then((cached) => {
         const fetchPromise = fetch(req)
           .then((res) => {
-            const copy = res.clone();
-            caches.open(CACHE_NAME).then((c) => c.put(req, copy));
+            putIfOk(req, res);
             return res;
           })
           .catch(() => cached);
-        return cached || fetchPromise;
+        return (
+          cached ||
+          fetchPromise.then(
+            (res) =>
+              res ||
+              new Response("", {
+                status: 504,
+                headers: { "Content-Type": "text/plain" },
+              }),
+          )
+        );
       }),
     );
   }
