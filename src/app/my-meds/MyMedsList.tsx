@@ -14,13 +14,13 @@ export function MyMedsList() {
   }, []);
 
   if (meds === null) {
-    return <p className="text-sm text-slate-500">Loading…</p>;
+    return <p className="text-sm text-slate-500 dark:text-slate-400">Loading…</p>;
   }
   if (meds.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-slate-600 dark:text-slate-400">
         You haven&apos;t saved any medications yet. Open a drug label and tap
-        <span className="mx-1 font-medium">Save to My meds</span>.
+        <span className="mx-1 font-medium text-slate-900 dark:text-slate-200">Save to My meds</span>.
       </div>
     );
   }
@@ -31,24 +31,24 @@ export function MyMedsList() {
         return (
           <li
             key={m.setid}
-            className="rounded-2xl border border-slate-200 bg-white p-4 flex items-center justify-between gap-3"
+            className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 flex items-center justify-between gap-3"
           >
             <Link href={`/drug/${m.setid}`} className="min-w-0 flex-1">
-              <p className="font-medium text-slate-900 truncate">
+              <p className="font-medium text-slate-900 dark:text-slate-100 truncate">
                 {m.productName ?? parts.name}
               </p>
-              <p className="text-sm text-slate-500 truncate">
+              <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
                 {[parts.dosageForm, m.manufacturer].filter(Boolean).join(" · ")}
               </p>
               {m.ndc && (
-                <p className="mt-1 text-xs font-mono text-slate-400">{m.ndc}</p>
+                <p className="mt-1 text-xs font-mono text-slate-400 dark:text-slate-500">{m.ndc}</p>
               )}
             </Link>
             <button
               type="button"
               aria-label={`Remove ${m.productName ?? parts.name}`}
               onClick={() => setMeds(removeMyMed(m.setid))}
-              className="rounded-xl border border-slate-200 bg-white p-2 text-slate-500 hover:bg-slate-50 hover:text-red-600"
+              className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-red-600 dark:hover:text-red-400"
             >
               <Trash2 className="h-4 w-4" aria-hidden />
             </button>

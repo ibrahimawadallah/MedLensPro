@@ -32,8 +32,8 @@ export function SearchBar({
 
   return (
     <form onSubmit={submit} className="w-full" role="search">
-      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-brand-300">
-        <Search className="ml-3 h-5 w-5 text-slate-400" aria-hidden />
+      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm focus-within:ring-2 focus-within:ring-brand-300">
+        <Search className="ml-3 h-5 w-5 text-slate-400 dark:text-slate-500" aria-hidden />
         <input
           type="search"
           name="q"
@@ -42,7 +42,7 @@ export function SearchBar({
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder}
           aria-label="Search for a medicine"
-          className="flex-1 bg-transparent py-3 outline-none text-[15px]"
+          className="flex-1 bg-transparent py-3 outline-none text-[15px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500"
         />
         <button
           type="submit"

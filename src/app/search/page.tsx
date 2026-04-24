@@ -2,6 +2,7 @@ import Link from "next/link";
 import { searchSpls } from "@/lib/dailymed";
 import { SearchBar } from "@/components/SearchBar";
 import { splitSplTitle } from "@/lib/format";
+import { RecentSearches } from "@/components/RecentSearches";
 
 function hasPage(v: number | "null" | null | undefined): v is number {
   return typeof v === "number" && v > 0;
@@ -33,7 +34,10 @@ export default async function SearchPage({ searchParams }: Props) {
       </div>
 
       {!q ? (
-        <p className="text-slate-600">Type a medicine name above to begin.</p>
+        <div className="space-y-6">
+          <p className="text-slate-600 dark:text-slate-400">Type a medicine name above to begin.</p>
+          <RecentSearches />
+        </div>
       ) : (
         <SearchResults q={q} page={page} nameType={nameType} />
       )}
@@ -55,16 +59,24 @@ async function SearchResults({
     data = await searchSpls(q, { page, nameType, pageSize: 20 });
   } catch (e) {
     return (
-      <p className="text-red-700">
-        Unable to reach DailyMed. {(e as Error).message}
-      </p>
+      <div className="rounded-2xl border border-red-200 bg-red-50 dark:bg-red-900/20 p-6">
+        <p className="text-red-700 dark:text-red-400 font-medium">
+          Unable to reach DailyMed
+        </p>
+        <p className="text-sm text-red-600 dark:text-red-500 mt-1">
+          {(e as Error).message}
+        </p>
+        <p className="text-sm text-red-600 dark:text-red-500 mt-2">
+          Please check your connection and try again.
+        </p>
+      </div>
     );
   }
 
   if (data.data.length === 0) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
-        No medicines matched <strong>{q}</strong>. Check the spelling, or try a
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-slate-600 dark:text-slate-400">
+        No medicines matched <strong className="text-slate-900 dark:text-slate-200">{q}</strong>. Check the spelling, or try a
         generic or brand name.
       </div>
     );
@@ -74,9 +86,9 @@ async function SearchResults({
 
   return (
     <div>
-      <p className="text-sm text-slate-500 mb-4">
+      <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
         {meta.total_elements.toLocaleString()} results for{" "}
-        <strong className="text-slate-700">{q}</strong> · page {meta.current_page}{" "}
+        <strong className="text-slate-700 dark:text-slate-300">{q}</strong> · page {meta.current_page}{" "}
         of {meta.total_pages}
       </p>
       <ul className="space-y-3">
@@ -86,20 +98,20 @@ async function SearchResults({
             <li key={spl.setid}>
               <Link
                 href={`/drug/${spl.setid}`}
-                className="block rounded-2xl border border-slate-200 bg-white p-4 hover:border-brand-300 hover:shadow-sm transition"
+                className="block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 hover:border-brand-300 dark:hover:border-brand-500 hover:shadow-sm transition"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-medium text-slate-900 truncate">
+                    <p className="font-medium text-slate-900 dark:text-slate-100 truncate">
                       {parts.name}
                     </p>
-                    <p className="text-sm text-slate-500 truncate">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
                       {[parts.dosageForm, parts.manufacturer]
                         .filter(Boolean)
                         .join(" · ")}
                     </p>
                   </div>
-                  <span className="text-xs text-slate-400 whitespace-nowrap">
+                  <span className="text-xs text-slate-400 dark:text-slate-500 whitespace-nowrap">
                     {spl.published_date}
                   </span>
                 </div>
@@ -115,7 +127,7 @@ async function SearchResults({
             href={`/search?q=${encodeURIComponent(q)}&page=${
               meta.previous_page
             }&type=${nameType}`}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700"
           >
             ← Previous
           </Link>
@@ -127,7 +139,7 @@ async function SearchResults({
             href={`/search?q=${encodeURIComponent(q)}&page=${
               meta.next_page
             }&type=${nameType}`}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 text-sm hover:bg-slate-50 dark:hover:bg-slate-700"
           >
             Next →
           </Link>

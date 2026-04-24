@@ -33,10 +33,10 @@ export default async function NdcLookupPage({ searchParams }: Props) {
 
   return (
     <div className="max-w-xl mx-auto px-4 py-8 space-y-6">
-      <h1 className="text-2xl font-semibold text-slate-900">
+      <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
         Look up a medicine by its NDC code
       </h1>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-slate-600 dark:text-slate-400">
         The National Drug Code (NDC) is printed on most US medication packaging.
         It&apos;s usually three groups of numbers, like{" "}
         <span className="font-mono">0002-4462-30</span>.
@@ -54,7 +54,7 @@ export default async function NdcLookupPage({ searchParams }: Props) {
           inputMode="numeric"
           autoComplete="off"
           placeholder="e.g. 0002-4462-30"
-          className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-brand-300"
+          className="flex-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3 font-mono text-sm outline-none focus:ring-2 focus:ring-brand-300 text-slate-900 dark:text-slate-100"
         />
         <button
           type="submit"
@@ -65,7 +65,7 @@ export default async function NdcLookupPage({ searchParams }: Props) {
       </form>
 
       {raw && !normalized && (
-        <p className="text-red-700 text-sm">
+        <p className="text-red-700 dark:text-red-400 text-sm">
           That doesn&apos;t look like a valid NDC. Enter 8–13 digits
           (e.g. <span className="font-mono">0002-4462-30</span>).
         </p>
@@ -73,12 +73,12 @@ export default async function NdcLookupPage({ searchParams }: Props) {
 
       {hits && normalized && (
         <section>
-          <p className="text-sm text-slate-500 mb-2">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
             {triedLabeler ? "No exact match — showing products from the same labeler:" : "Matches for"}{" "}
-            <span className="font-mono text-slate-700">{normalized}</span>
+            <span className="font-mono text-slate-700 dark:text-slate-300">{normalized}</span>
           </p>
           {hits.data.length === 0 ? (
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
+            <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-slate-600 dark:text-slate-400">
               No medicines found for that NDC in DailyMed.
             </div>
           ) : (
@@ -89,10 +89,10 @@ export default async function NdcLookupPage({ searchParams }: Props) {
                   <li key={spl.setid}>
                     <Link
                       href={`/drug/${spl.setid}`}
-                      className="block rounded-2xl border border-slate-200 bg-white p-4 hover:border-brand-300 hover:shadow-sm"
+                      className="block rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-4 hover:border-brand-300 dark:hover:border-brand-500 hover:shadow-sm"
                     >
-                      <p className="font-medium text-slate-900">{parts.name}</p>
-                      <p className="text-sm text-slate-500">
+                      <p className="font-medium text-slate-900 dark:text-slate-100">{parts.name}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
                         {[parts.dosageForm, parts.manufacturer]
                           .filter(Boolean)
                           .join(" · ")}

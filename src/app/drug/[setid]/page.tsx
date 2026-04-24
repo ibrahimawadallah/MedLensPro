@@ -56,20 +56,20 @@ export default async function DrugPage({ params }: Props) {
       <header className="space-y-2">
         <Link
           href="/search"
-          className="text-sm text-brand-700 hover:underline inline-flex items-center gap-1"
+          className="text-sm text-brand-700 dark:text-brand-400 hover:underline inline-flex items-center gap-1"
         >
           ← Back to search
         </Link>
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
           {displayName}
         </h1>
         {parsed.genericName && parsed.genericName !== displayName && (
-          <p className="text-slate-600">
+          <p className="text-slate-600 dark:text-slate-400">
             Generic name:{" "}
-            <span className="font-medium">{parsed.genericName}</span>
+            <span className="font-medium text-slate-900 dark:text-slate-200">{parsed.genericName}</span>
           </p>
         )}
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           {[dosageForm, manufacturer].filter(Boolean).join(" · ")}
         </p>
       </header>
@@ -89,38 +89,38 @@ export default async function DrugPage({ params }: Props) {
           href={dailymedDrugPageUrl(setid)}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
         >
           <ExternalLink className="h-4 w-4" aria-hidden /> Full label on DailyMed
         </a>
         <a
           href={dailymedPdfUrl(setid)}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
         >
           <FileText className="h-4 w-4" aria-hidden /> PDF
         </a>
         <a
           href={dailymedZipUrl(setid)}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
         >
           <Archive className="h-4 w-4" aria-hidden /> Full label (ZIP)
         </a>
       </div>
 
       {parsed.activeIngredients.length > 0 && (
-        <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h2 className="text-base md:text-lg font-semibold text-slate-900">
+        <section className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+          <h2 className="text-base md:text-lg font-semibold text-slate-900 dark:text-slate-100">
             Active ingredient{parsed.activeIngredients.length > 1 ? "s" : ""}
           </h2>
-          <ul className="mt-2 divide-y divide-slate-100">
+          <ul className="mt-2 divide-y divide-slate-100 dark:divide-slate-700">
             {parsed.activeIngredients.map((ing, i) => (
               <li
                 key={`${ing.name}-${i}`}
                 className="flex items-center justify-between py-2 text-sm"
               >
-                <span className="font-medium text-slate-800">{ing.name}</span>
+                <span className="font-medium text-slate-800 dark:text-slate-200">{ing.name}</span>
                 {ing.strength && (
-                  <span className="text-slate-500">{ing.strength}</span>
+                  <span className="text-slate-500 dark:text-slate-400">{ing.strength}</span>
                 )}
               </li>
             ))}
@@ -129,7 +129,7 @@ export default async function DrugPage({ params }: Props) {
       )}
 
       {parsed.patientSections.length === 0 ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
+        <div className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-6 text-slate-600 dark:text-slate-400">
           We couldn&apos;t extract patient-friendly sections from this label.
           You can still read the full label on DailyMed using the link above.
         </div>
@@ -161,15 +161,15 @@ export default async function DrugPage({ params }: Props) {
       <MediaGallery media={media} />
 
       {ndcs.length > 0 && (
-        <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h2 className="text-base md:text-lg font-semibold text-slate-900">
+        <section className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+          <h2 className="text-base md:text-lg font-semibold text-slate-900 dark:text-slate-100">
             Package codes (NDC)
           </h2>
           <ul className="mt-2 flex flex-wrap gap-2 text-sm">
             {ndcs.map((ndc) => (
               <li
                 key={ndc}
-                className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs text-slate-700"
+                className="rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 px-2.5 py-1 font-mono text-xs text-slate-700 dark:text-slate-300"
               >
                 {ndc}
               </li>
@@ -179,21 +179,21 @@ export default async function DrugPage({ params }: Props) {
       )}
 
       {parsed.providerSections.length > 0 && (
-        <details className="rounded-2xl border border-slate-200 bg-white p-5">
-          <summary className="cursor-pointer text-sm font-medium text-slate-700">
+        <details className="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5">
+          <summary className="cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
             Full prescribing information (for healthcare professionals)
           </summary>
           <div className="mt-4 space-y-5">
             {parsed.providerSections.map((section, idx) => (
               <div
                 key={`${section.code ?? "p"}-${idx}`}
-                className="border-t pt-4"
+                className="border-t border-slate-100 dark:border-slate-700 pt-4"
               >
-                <h3 className="font-semibold text-slate-800">
+                <h3 className="font-semibold text-slate-800 dark:text-slate-200">
                   {section.title ?? section.displayName ?? "Section"}
                 </h3>
                 <div
-                  className="spl-content text-[14px] text-slate-700"
+                  className="spl-content text-[14px] text-slate-700 dark:text-slate-300"
                   dangerouslySetInnerHTML={{ __html: section.html }}
                 />
               </div>

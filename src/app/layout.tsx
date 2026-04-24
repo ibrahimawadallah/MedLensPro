@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Pill, Search, BookmarkCheck } from "lucide-react";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import "./globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://medlens.app";
@@ -61,73 +63,81 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-brand-700 focus:px-3 focus:py-2 focus:text-white"
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          Skip to main content
-        </a>
-        <header
-          className="border-b border-[var(--border)] bg-white/80 backdrop-blur sticky top-0 z-20"
-          style={{ paddingTop: "env(safe-area-inset-top)" }}
-        >
-          <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-semibold text-brand-700 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
-            >
-              <Pill className="h-5 w-5" aria-hidden />
-              MedLens
-            </Link>
-            <nav aria-label="Primary" className="flex items-center gap-4 text-sm">
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-brand-700 focus:px-3 focus:py-2 focus:text-white"
+          >
+            Skip to main content
+          </a>
+          <header
+            className="border-b border-[var(--border)] bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-20"
+            style={{ paddingTop: "env(safe-area-inset-top)" }}
+          >
+            <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
               <Link
-                href="/search"
-                className="flex items-center gap-1 text-slate-700 hover:text-brand-700 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                href="/"
+                className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
               >
-                <Search className="h-4 w-4" aria-hidden /> Search
+                <Pill className="h-5 w-5" aria-hidden />
+                MedLens
               </Link>
-              <Link
-                href="/my-meds"
-                className="flex items-center gap-1 text-slate-700 hover:text-brand-700 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
-              >
-                <BookmarkCheck className="h-4 w-4" aria-hidden /> My meds
-              </Link>
-            </nav>
-          </div>
-        </header>
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <ServiceWorkerRegister />
-        <footer
-          className="border-t border-[var(--border)] py-8 text-sm text-slate-600"
-          style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom))" }}
-        >
-          <div className="max-w-5xl mx-auto px-4 space-y-2">
-            <p>
-              MedLens is an independent, patient-friendly reader for FDA drug
-              labels. Label data is provided by the U.S. National Library of
-              Medicine{" "}
-              <a
-                className="text-brand-700 underline"
-                href="https://dailymed.nlm.nih.gov/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                DailyMed
-              </a>{" "}
-              service.
-            </p>
-            <p className="text-xs">
-              This information is for educational purposes only and is not a
-              substitute for the advice of a healthcare professional. Always
-              read the full label and talk to your doctor or pharmacist before
-              taking any medication.
-            </p>
-          </div>
-        </footer>
+              <nav aria-label="Primary" className="flex items-center gap-4 text-sm">
+                <Link
+                  href="/search"
+                  className="flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                >
+                  <Search className="h-4 w-4" aria-hidden /> Search
+                </Link>
+                <Link
+                  href="/my-meds"
+                  className="flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                >
+                  <BookmarkCheck className="h-4 w-4" aria-hidden /> My meds
+                </Link>
+                <ThemeToggle />
+              </nav>
+            </div>
+          </header>
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <ServiceWorkerRegister />
+          <footer
+            className="border-t border-[var(--border)] py-8 text-sm text-slate-600 dark:text-slate-400"
+            style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom))" }}
+          >
+            <div className="max-w-5xl mx-auto px-4 space-y-2">
+              <p>
+                MedLens is an independent, patient-friendly reader for FDA drug
+                labels. Label data is provided by the U.S. National Library of
+                Medicine{" "}
+                <a
+                  className="text-brand-700 dark:text-brand-400 underline"
+                  href="https://dailymed.nlm.nih.gov/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  DailyMed
+                </a>{" "}
+                service.
+              </p>
+              <p className="text-xs">
+                This information is for educational purposes only and is not a
+                substitute for the advice of a healthcare professional. Always
+                read the full label and talk to your doctor or pharmacist before
+                taking any medication.
+              </p>
+            </div>
+          </footer>
+        </ThemeProvider>
       </body>
     </html>
   );
