@@ -33,10 +33,10 @@ export interface Paged<T> {
     total_pages: number;
     current_page: number;
     elements_per_page: number;
-    next_page: number | "null";
-    previous_page: number | "null";
-    next_page_url: string | "null";
-    previous_page_url: string | "null";
+    next_page: number | "null" | null;
+    previous_page: number | "null" | null;
+    next_page_url: string | "null" | null;
+    previous_page_url: string | "null" | null;
     current_url: string;
     db_published_date: string;
   };

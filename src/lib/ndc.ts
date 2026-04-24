@@ -30,6 +30,14 @@ export function normalizeNdc(raw: string): string | null {
   const digits = digitsOnly(trimmed);
   if (digits.length < 8) return null;
 
+  // 8-digit (4-4) labeler+product, no package segment
+  if (digits.length === 8) {
+    return `${digits.slice(0, 4)}-${digits.slice(4)}`;
+  }
+  // 9-digit (5-4) labeler+product, no package segment
+  if (digits.length === 9) {
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  }
   // 10-digit NDC: try 5-4-1, 5-3-2, 4-4-2
   if (digits.length === 10) {
     // Default to 5-4-1 which is the most common

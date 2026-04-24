@@ -240,8 +240,8 @@ export function parseSplXml(xml: string, setid: string): ParsedSpl {
   // Recursively flatten sections (sections can contain sub-sections via <component><section>)
   const allSections: ParsedSection[] = [];
   const visit = (section: Node) => {
-    const parsed = parseSection(section);
-    if (parsed) allSections.push(parsed);
+    const result = parseSection(section);
+    if (result) allSections.push(result);
     const childNodes = (section["section"] as Node[]) ?? [];
     const subComponents = directChildren(childNodes, "component");
     for (const sub of subComponents) {

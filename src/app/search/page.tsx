@@ -3,6 +3,10 @@ import { searchSpls } from "@/lib/dailymed";
 import { SearchBar } from "@/components/SearchBar";
 import { splitSplTitle } from "@/lib/format";
 
+function hasPage(v: number | "null" | null | undefined): v is number {
+  return typeof v === "number" && v > 0;
+}
+
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -106,7 +110,7 @@ async function SearchResults({
       </ul>
 
       <nav className="mt-6 flex items-center justify-between">
-        {meta.previous_page !== "null" ? (
+        {hasPage(meta.previous_page) ? (
           <Link
             href={`/search?q=${encodeURIComponent(q)}&page=${
               meta.previous_page
@@ -118,7 +122,7 @@ async function SearchResults({
         ) : (
           <span />
         )}
-        {meta.next_page !== "null" ? (
+        {hasPage(meta.next_page) ? (
           <Link
             href={`/search?q=${encodeURIComponent(q)}&page=${
               meta.next_page

@@ -62,8 +62,8 @@ export default async function NdcLookupPage({ searchParams }: Props) {
 
       {raw && !normalized && (
         <p className="text-red-700 text-sm">
-          That doesn&apos;t look like a valid NDC. Please include at least 10
-          digits.
+          That doesn&apos;t look like a valid NDC. Enter 8–13 digits
+          (e.g. <span className="font-mono">0002-4462-30</span>).
         </p>
       )}
 
