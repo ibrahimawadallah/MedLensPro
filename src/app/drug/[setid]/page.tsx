@@ -69,7 +69,7 @@ export default async function DrugPage({ params }: Props) {
             <span className="font-medium">{parsed.genericName}</span>
           </p>
         )}
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-slate-600">
           {[dosageForm, manufacturer].filter(Boolean).join(" · ")}
         </p>
       </header>

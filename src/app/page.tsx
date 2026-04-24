@@ -56,8 +56,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="max-w-3xl mx-auto px-4 py-8">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-500">
+      <section className="max-w-3xl mx-auto px-4 py-8" aria-labelledby="popular-heading">
+        <h2
+          id="popular-heading"
+          className="text-sm font-semibold uppercase tracking-wider text-slate-600"
+        >
           Popular searches
         </h2>
         <ul className="mt-3 flex flex-wrap gap-2">
@@ -74,7 +77,13 @@ export default function HomePage() {
         </ul>
       </section>
 
-      <section className="max-w-3xl mx-auto px-4 pb-16 grid gap-4 md:grid-cols-3">
+      <section
+        className="max-w-3xl mx-auto px-4 pb-16 grid gap-4 md:grid-cols-3"
+        aria-labelledby="features-heading"
+      >
+        <h2 id="features-heading" className="sr-only">
+          Why MedLens
+        </h2>
         <Feature
           title="Plain-language"
           body="Labels are rewritten with patient-friendly headings (e.g. ‘How to take it’ instead of ‘Dosage and administration’)."

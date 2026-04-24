@@ -42,8 +42,12 @@ export default async function NdcLookupPage({ searchParams }: Props) {
         <span className="font-mono">0002-4462-30</span>.
       </p>
 
-      <form method="GET" className="flex gap-2">
+      <form method="GET" className="flex gap-2" aria-label="NDC lookup">
+        <label htmlFor="ndc-input" className="sr-only">
+          Enter a National Drug Code
+        </label>
         <input
+          id="ndc-input"
           type="text"
           name="ndc"
           defaultValue={raw}
@@ -54,7 +58,7 @@ export default async function NdcLookupPage({ searchParams }: Props) {
         />
         <button
           type="submit"
-          className="rounded-xl bg-brand-600 px-4 py-3 text-sm font-medium text-white hover:bg-brand-700"
+          className="rounded-xl bg-brand-600 px-4 py-3 text-sm font-medium text-white hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
         >
           Look up
         </button>
