@@ -16,9 +16,16 @@ interface BarcodeDetectorCtor {
   getSupportedFormats?: () => Promise<string[]>;
 }
 
+function stopStream(stream: MediaStream | null) {
+  if (!stream) return;
+  stream.getTracks().forEach((t) => t.stop());
+}
+
 export function BarcodeScanner() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const mountedRef = useRef(true);
+  const startingRef = useRef(false);
   const router = useRouter();
   const [supported, setSupported] = useState<boolean | null>(null);
   const [running, setRunning] = useState(false);
@@ -36,34 +43,53 @@ export function BarcodeScanner() {
 
   const stop = useCallback(() => {
     setRunning(false);
-    const stream = streamRef.current;
-    if (stream) {
-      stream.getTracks().forEach((t) => t.stop());
-      streamRef.current = null;
-    }
+    stopStream(streamRef.current);
+    streamRef.current = null;
     if (videoRef.current) videoRef.current.srcObject = null;
   }, []);
 
   useEffect(() => {
-    return () => stop();
-  }, [stop]);
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      stopStream(streamRef.current);
+      streamRef.current = null;
+    };
+  }, []);
 
   const start = useCallback(async () => {
+    if (startingRef.current || streamRef.current) return;
+    startingRef.current = true;
     setError(null);
+    let stream: MediaStream | null = null;
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
+      stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: "environment" } },
         audio: false,
       });
+      if (!mountedRef.current) {
+        stopStream(stream);
+        return;
+      }
       streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        await videoRef.current.play().catch(() => {});
+      }
+      if (!mountedRef.current) {
+        stopStream(stream);
+        streamRef.current = null;
+        return;
       }
       setRunning(true);
     } catch (e) {
-      setError((e as Error).message || "Unable to start camera.");
-      setRunning(false);
+      stopStream(stream);
+      if (mountedRef.current) {
+        setError((e as Error).message || "Unable to start camera.");
+        setRunning(false);
+      }
+    } finally {
+      startingRef.current = false;
     }
   }, []);
 
@@ -98,10 +124,10 @@ export function BarcodeScanner() {
     };
   }, [running, router, stop]);
 
-  if (supported === null) return <p className="text-sm text-slate-500">Checking camera support…</p>;
+  if (supported === null) return <p className="text-sm text-slate-600">Checking camera support…</p>;
   if (!supported) {
     return (
-      <div className="text-sm text-slate-600 space-y-2">
+      <div className="text-sm text-slate-700 space-y-2">
         <p>
           Barcode scanning isn&apos;t supported on this browser. You can still
           type the NDC manually on the{" "}
@@ -121,6 +147,7 @@ export function BarcodeScanner() {
           ref={videoRef}
           playsInline
           muted
+          aria-label="Barcode scanner camera preview"
           className="w-full h-full object-cover"
         />
         {!running && (
@@ -129,9 +156,13 @@ export function BarcodeScanner() {
           </div>
         )}
       </div>
-      {error && <p className="text-sm text-red-700">{error}</p>}
+      {error && (
+        <p role="alert" className="text-sm text-red-700">
+          {error}
+        </p>
+      )}
       {lastDetected && (
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-600">
           Detected: <span className="font-mono">{lastDetected}</span>
         </p>
       )}
@@ -140,7 +171,7 @@ export function BarcodeScanner() {
           <button
             type="button"
             onClick={start}
-            className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3 py-2 text-sm font-medium text-white hover:bg-brand-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3 py-2 text-sm font-medium text-white hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
           >
             <Camera className="h-4 w-4" aria-hidden /> Start camera
           </button>
@@ -148,7 +179,7 @@ export function BarcodeScanner() {
           <button
             type="button"
             onClick={stop}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
           >
             <CameraOff className="h-4 w-4" aria-hidden /> Stop
           </button>

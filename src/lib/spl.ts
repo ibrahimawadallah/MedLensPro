@@ -146,7 +146,7 @@ function renderNarrative(list: Node[] | undefined): string {
       }
       case "linkHtml": {
         const href = a["href"] ?? "#";
-        const safeHref = /^(https?:|mailto:|#|\/)/i.test(href) ? href : "#";
+        const safeHref = /^(https?:\/\/|mailto:|#|\/(?!\/))/i.test(href) ? href : "#";
         out += `<a href="${escapeHtml(safeHref)}" target="_blank" rel="noreferrer">${renderNarrative(inner)}</a>`;
         break;
       }
