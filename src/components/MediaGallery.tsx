@@ -12,18 +12,23 @@ export async function MediaGallery({ media }: Props) {
   const t = await getTranslations("drug");
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5">
-      <h2 className="text-base md:text-lg font-semibold text-slate-900 mb-3">
+    <section className="rounded-2xl border border-slate-200 bg-white p-5" aria-labelledby="media-heading">
+      <h2 id="media-heading" className="text-base md:text-lg font-semibold text-slate-900 mb-3">
         {t("mediaHeading")}
       </h2>
       <p className="text-sm text-slate-500 mb-4">{t("mediaIntro")}</p>
-      <ul className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      <ul className="grid grid-cols-2 md:grid-cols-3 gap-3" role="list">
         {images.map((m) => (
           <li
             key={m.url}
             className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50"
           >
-            <a href={m.url} target="_blank" rel="noreferrer">
+            <a
+              href={m.url}
+              target="_blank"
+              rel="noreferrer"
+              className="block focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2"
+            >
               <Image
                 src={m.url}
                 alt={m.name}

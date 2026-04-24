@@ -7,14 +7,17 @@ import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { AuthButton } from "@/components/AuthButton";
 import { localeDirection, type Locale } from "@/i18n/config";
 import { Noto_Sans_Arabic } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
 const notoSansArabic = Noto_Sans_Arabic({
   subsets: ["arabic"],
   variable: "--font-arabic",
   display: "swap",
+  preload: true,
 });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://medlens.app";
@@ -81,6 +84,11 @@ export default async function RootLayout({
   const dir = localeDirection(locale);
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning className={notoSansArabic.variable}>
+      <head>
+        <link rel="preconnect" href="https://dailymed.nlm.nih.gov" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
@@ -88,7 +96,8 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NextIntlClientProvider locale={locale} messages={messages}>
+          <SessionProvider>
+            <NextIntlClientProvider locale={locale} messages={messages}>
             <a
               href="#main"
               className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:start-2 focus:z-50 focus:rounded-lg focus:bg-brand-700 focus:px-3 focus:py-2 focus:text-white"
@@ -126,6 +135,7 @@ export default async function RootLayout({
                     <BookmarkCheck className="h-4 w-4" aria-hidden /> {t("common.myMeds")}
                   </Link>
                   <div className="flex items-center gap-2">
+                    <AuthButton />
                     <ThemeToggle />
                     <LocaleSwitcher />
                   </div>
@@ -159,6 +169,7 @@ export default async function RootLayout({
               </div>
             </footer>
           </NextIntlClientProvider>
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

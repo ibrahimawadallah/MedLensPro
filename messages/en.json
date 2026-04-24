@@ -122,6 +122,29 @@
     "heading": "You're offline",
     "body": "MedLens needs an internet connection to fetch the latest drug labels from DailyMed. Your saved medications on <link>My meds</link> are still available."
   },
+  "auth": {
+    "signIn": {
+      "title": "Sign in to MedLens",
+      "subtitle": "Access your saved medications and search history",
+      "withGoogle": "Continue with Google",
+      "or": "or continue with email",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Start saving your medications today",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in"
+    }
+  },
   "sections": {
     "additional": "Additional prescribing information",
     "34066-1": { "title": "Serious warning (boxed)", "hint": "The FDA's most prominent safety warning." },

@@ -45,8 +45,9 @@ export function AddToMyMedsButton({ med }: Props) {
         }
       }}
       aria-pressed={saved}
+      aria-label={saved ? t("saved") : t("save")}
       className={
-        "inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium " +
+        "inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 " +
         (saved
           ? "bg-brand-50 text-brand-700 border border-brand-200"
           : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50")
