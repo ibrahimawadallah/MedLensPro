@@ -37,7 +37,39 @@ export function FDANewsSection() {
   }
 
   if (error || newsItems.length === 0) {
-    return null;
+    return (
+      <section className="max-w-6xl mx-auto px-4 py-16">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-2 rounded-xl bg-brand-100 dark:bg-brand-900/30">
+            <Newspaper className="h-6 w-6 text-brand-600 dark:text-brand-400" />
+          </div>
+          <div>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+              FDA Official Updates
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400">
+              Latest drug safety communications from the U.S. Food and Drug Administration
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8 text-center">
+          <Newspaper className="h-12 w-12 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            Unable to load FDA updates at this time.
+          </p>
+          <a
+            href="https://www.fda.gov/drugs/drug-safety-and-availability"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300"
+          >
+            Visit FDA Drug Safety Page
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
+      </section>
+    );
   }
 
   return (
