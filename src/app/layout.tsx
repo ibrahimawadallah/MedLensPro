@@ -77,14 +77,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: "/",
-      images: [{ url: "/social-logo.png", width: 300, height: 300, alt: t("common.brand") }],
+      images: [{ url: "/logo-main.png", width: 300, height: 300, alt: t("common.brand") }],
       locale: "en_US",
     },
     twitter: {
       card: "summary",
       title,
       description,
-      images: ["/social-logo.png"],
+      images: ["/logo-main.png"],
     },
     formatDetection: { telephone: false },
     robots: {
