@@ -16,7 +16,7 @@ export default async function BlogPostPage() {
       <article className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-8">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xs font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-900/20 px-2 py-1 rounded-full">
-            Women's Health
+            Women&apos;s Health
           </span>
           <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
             <Calendar className="h-3 w-3" />

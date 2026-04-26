@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { ShieldAlert, ExternalLink, Clock, AlertTriangle, Newspaper } from "lucide-react";
-import Link from "next/link";
 import { getFDADrugSafetyNews, formatFDADate, type FDANewsItem } from "@/lib/fda";
 
 export function FDANewsSection() {

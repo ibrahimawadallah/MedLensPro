@@ -52,7 +52,7 @@ export default async function BlogPostPage() {
             2. Double Dosing
           </h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            Taking extra doses to "catch up" can be dangerous. If you miss a dose, follow your healthcare provider's instructions or consult your pharmacist.
+            Taking extra doses to &quot;catch up&quot; can be dangerous. If you miss a dose, follow your healthcare provider&apos;s instructions or consult your pharmacist.
           </p>
 
           <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mt-6 mb-3">
@@ -66,7 +66,7 @@ export default async function BlogPostPage() {
             4. Stopping Early
           </h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            Stopping antibiotics when you "feel better" can lead to antibiotic resistance. Always complete the full course unless directed otherwise.
+            Stopping antibiotics when you &quot;feel better&quot; can lead to antibiotic resistance. Always complete the full course unless directed otherwise.
           </p>
 
           <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mt-6 mb-3">
@@ -98,7 +98,7 @@ export default async function BlogPostPage() {
             When to Seek Help
           </h2>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            If you suspect you've made a medication error, contact your healthcare provider or poison control center immediately. Don't wait for symptoms to appear.
+            If you suspect you&apos;ve made a medication error, contact your healthcare provider or poison control center immediately. Don&apos;t wait for symptoms to appear.
           </p>
         </div>
       </article>

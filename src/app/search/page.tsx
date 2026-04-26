@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { searchSpls } from "@/lib/dailymed";
 import { SearchBar } from "@/components/SearchBar";
 import { splitSplTitle } from "@/lib/format";
-import { Search, Filter, Clock, TrendingUp, Pill, Package } from "lucide-react";
+import { Search, Clock, TrendingUp, Pill, Package } from "lucide-react";
 import { SearchFilters } from "@/components/SearchFilters";
 import { getRecentSearches } from "@/lib/storage";
 
@@ -24,7 +24,6 @@ export async function generateMetadata({ searchParams }: Props) {
 }
 
 export default async function SearchPage({ searchParams }: Props) {
-  const t = await getTranslations("search");
   const q = searchParams.q?.trim() ?? "";
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
   const nameType =

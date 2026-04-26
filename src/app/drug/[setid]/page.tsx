@@ -15,7 +15,7 @@ import { SectionAccordion } from "@/components/SectionAccordion";
 import { MediaGallery } from "@/components/MediaGallery";
 import { AddToMyMedsButton } from "@/components/AddToMyMedsButton";
 import { GatedContent } from "@/components/GatedContent";
-import { ExternalLink, FileText, Archive, ChevronLeft, Lock, Pill, Package, AlertTriangle } from "lucide-react";
+import { ExternalLink, FileText, Archive, ChevronLeft, Pill, Package, AlertTriangle } from "lucide-react";
 import { auth } from "@/auth";
 
 export const revalidate = 86400;

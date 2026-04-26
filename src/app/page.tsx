@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ScanLine, Hash, ShieldCheck, Heart, Lock, Zap, Globe, Smartphone, Users, Sparkles, ArrowRight, ChevronDown, CheckCircle } from "lucide-react";
+import { ScanLine, Hash, Heart, Lock, Zap, Globe, Smartphone, Users, Sparkles, ArrowRight, ChevronDown, CheckCircle } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { SearchBar } from "@/components/SearchBar";
 import { HeroCTAButtons } from "@/components/HeroCTAButtons";
@@ -204,7 +204,7 @@ export default async function HomePage() {
             <StepCard
               number={2}
               title="Read in Plain Language"
-              description="View patient-friendly sections organized by priority: what it's for, how to take it, warnings, and more."
+              description="View patient-friendly sections organized by priority: what it&apos;s for, how to take it, warnings, and more."
             />
             <StepCard
               number={3}
