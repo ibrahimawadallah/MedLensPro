@@ -76,14 +76,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: "/",
-      images: [{ url: "/icon-512.png", width: 512, height: 512, alt: t("common.brand") }],
+      images: [{ url: "/logo.png", width: 300, height: 300, alt: t("common.brand") }],
       locale: "en_US",
     },
     twitter: {
       card: "summary",
       title,
       description,
-      images: ["/icon-512.png"],
+      images: ["/logo.png"],
     },
     formatDetection: { telephone: false },
     robots: {
@@ -156,9 +156,11 @@ export default async function RootLayout({
                   href="/"
                   className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                 >
-                  <div className="h-6 w-6 bg-brand-600 dark:bg-brand-500 rounded-full flex items-center justify-center text-white text-xs font-bold" aria-hidden>
-                    ML
-                  </div>
+                  <img 
+                    src="/logo.png" 
+                    alt="MedLens Logo" 
+                    className="h-8 w-8 object-contain"
+                  />
                   {t("common.brand")}
                 </Link>
                 <nav
