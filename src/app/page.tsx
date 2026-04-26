@@ -137,6 +137,9 @@ export default async function HomePage() {
         </ul>
       </section>
 
+      {/* FDA Official Updates */}
+      <FDANewsSection />
+
       {/* Features Section */}
       <section className="max-w-6xl mx-auto px-4 py-20">
         <div className="text-center mb-16">
@@ -180,9 +183,6 @@ export default async function HomePage() {
           />
         </div>
       </section>
-
-      {/* FDA Official Updates */}
-      <FDANewsSection />
 
       {/* How It Works */}
       <section className="bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-slate-800 py-20">
