@@ -158,7 +158,7 @@ export default async function RootLayout({
                   className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                 >
                   <Image 
-                    src="/logo-main.png" 
+                    src="/social-logo.png" 
                     alt="MedLens Logo" 
                     width={40}
                     height={40}
