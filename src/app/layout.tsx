@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Search, BookmarkCheck, Facebook, Twitter, Linkedin } from "lucide-react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
@@ -155,9 +156,11 @@ export default async function RootLayout({
                   href="/"
                   className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                 >
-                  <img 
+                  <Image 
                     src="/logo.png" 
                     alt="MedLens Logo" 
+                    width={32}
+                    height={32}
                     className="h-8 w-8 object-contain"
                   />
                   {t("common.brand")}
