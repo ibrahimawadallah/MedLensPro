@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { Handshake, Building2, Stethoscope, PenTool, ArrowRight, CheckCircle2, Mail, Phone, MapPin } from "lucide-react";
-import { getTranslations } from "next-intl/server";
 
 export default function PartnershipsPage() {
-  const t = await getTranslations();
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Hero Section */}
@@ -483,7 +481,7 @@ export default function PartnershipsPage() {
               Ready to Partner?
             </h2>
             <p className="text-brand-100 mb-8 max-w-2xl mx-auto">
-              Let's discuss how we can work together to improve medication safety and patient care across the MENA region.
+              Let&apos;s discuss how we can work together to improve medication safety and patient care across the MENA region.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

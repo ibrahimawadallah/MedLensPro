@@ -221,84 +221,107 @@ export function SearchBar({
   return (
     <div ref={searchRef} className="relative w-full">
       <form onSubmit={submit} className="w-full" role="search">
-        <div className="flex items-center gap-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm focus-within:ring-2 focus-within:ring-brand-300">
-          <Search className="ms-3 h-5 w-5 text-slate-400" aria-hidden />
-          <input
-            type="search"
-            name="q"
-            value={value}
-            autoFocus={autoFocus}
-            onChange={(e) => {
-              setValue(e.target.value);
-              setSelectedIndex(-1);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            onKeyDown={handleKeyDown}
-            placeholder={placeholder ?? t("home.searchPlaceholder")}
-            aria-label={t("home.searchAriaLabel")}
-            aria-autocomplete="list"
-            aria-controls="search-suggestions"
-            aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
-            className="flex-1 bg-transparent py-3 outline-none text-[15px] text-slate-900 dark:text-slate-100"
-          />
-          {value && (
+        <div className="flex items-center gap-2 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg focus-within:ring-2 focus-within:ring-brand-500 focus-within:border-brand-500 transition-all">
+          <div className="flex items-center gap-2 flex-1">
+            <Search className="ms-3 h-5 w-5 text-slate-400" aria-hidden />
+            <input
+              type="search"
+              name="q"
+              value={value}
+              autoFocus={autoFocus}
+              onChange={(e) => {
+                setValue(e.target.value);
+                setSelectedIndex(-1);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              onKeyDown={handleKeyDown}
+              placeholder={placeholder ?? t("home.searchPlaceholder")}
+              aria-label={t("home.searchAriaLabel")}
+              aria-autocomplete="list"
+              aria-controls="search-suggestions"
+              aria-activedescendant={selectedIndex >= 0 ? `suggestion-${selectedIndex}` : undefined}
+              className="flex-1 bg-transparent py-3 outline-none text-[15px] text-slate-900 dark:text-slate-100 placeholder:text-slate-400"
+            />
+          </div>
+          <div className="flex items-center gap-1">
+            {value && (
+              <button
+                type="button"
+                onClick={clearInput}
+                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                aria-label="Clear search"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
             <button
               type="button"
-              onClick={clearInput}
-              className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-              aria-label="Clear search"
+              onClick={startVoiceSearch}
+              className={`p-2 rounded-lg transition-colors ${
+                isListening
+                  ? "text-red-500 bg-red-50 dark:bg-red-900/20"
+                  : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+              }`}
+              aria-label="Voice search"
+              title="Voice search"
             >
-              <X className="h-4 w-4" />
+              <Mic className="h-4 w-4" />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={startVoiceSearch}
-            className={`p-2 rounded-lg ${isListening ? "text-red-500 bg-red-50 dark:bg-red-900/20" : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"}`}
-            aria-label="Voice search"
-          >
-            <Mic className="h-4 w-4" />
-          </button>
-          <button
-            type="submit"
-            disabled={pending || !value.trim()}
-            className="m-1 rounded-xl bg-brand-600 dark:bg-brand-500 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 hover:bg-brand-700 dark:hover:bg-brand-600"
-          >
-            {pending ? t("home.searching") : t("common.search")}
-          </button>
+            <button
+              type="submit"
+              disabled={pending || !value.trim()}
+              className="m-1 rounded-xl bg-brand-600 dark:bg-brand-500 px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-700 dark:hover:bg-brand-600 transition-all shadow-md hover:shadow-lg"
+            >
+              {pending ? (
+                <span className="flex items-center gap-2">
+                  <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                  {t("home.searching")}
+                </span>
+              ) : (
+                t("common.search")
+              )}
+            </button>
+          </div>
         </div>
       </form>
 
       {showSuggestions && suggestions.length > 0 && (
         <div
           id="search-suggestions"
-          className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg max-h-80 overflow-y-auto"
+          className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-xl max-h-96 overflow-y-auto"
           role="listbox"
         >
-          <ul className="py-2" role="presentation">
-            {suggestions.map((suggestion, index) => (
-              <li key={index} role="presentation">
-                <button
-                  id={`suggestion-${index}`}
-                  onClick={() => selectSuggestion(suggestion)}
-                  role="option"
-                  aria-selected={selectedIndex === index}
-                  className={`w-full flex items-center gap-3 px-4 py-2 text-left transition-colors ${
-                    selectedIndex === index
-                      ? "bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-400"
-                      : "hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
-                  }`}
-                >
-                  {recentSearches.includes(suggestion) && !POPULAR_SEARCHES.includes(suggestion) ? (
-                    <Clock className="h-4 w-4 text-slate-400" aria-hidden />
-                  ) : (
-                    <Search className="h-4 w-4 text-slate-400" aria-hidden />
-                  )}
-                  <span className="text-sm">{suggestion}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className="p-2">
+            {value && recentSearches.filter((s) => s.toLowerCase().includes(value.toLowerCase())).length > 0 && (
+              <div className="px-3 py-2 text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                Recent
+              </div>
+            )}
+            <ul className="py-1" role="presentation">
+              {suggestions.map((suggestion, index) => (
+                <li key={index} role="presentation">
+                  <button
+                    id={`suggestion-${index}`}
+                    onClick={() => selectSuggestion(suggestion)}
+                    role="option"
+                    aria-selected={selectedIndex === index}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-all rounded-lg ${
+                      selectedIndex === index
+                        ? "bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400"
+                        : "hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300"
+                    }`}
+                  >
+                    {recentSearches.includes(suggestion) && !POPULAR_SEARCHES.includes(suggestion) ? (
+                      <Clock className="h-4 w-4 text-slate-400" aria-hidden />
+                    ) : (
+                      <Search className="h-4 w-4 text-slate-400" aria-hidden />
+                    )}
+                    <span className="text-sm font-medium">{suggestion}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
     </div>
