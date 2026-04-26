@@ -65,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     icons: {
       icon: [
-        { url: "/logo.png", sizes: "300x300", type: "image/png" },
+        { url: "/logo-main.png", sizes: "300x300", type: "image/png" },
         { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
         { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
       ],
@@ -77,14 +77,14 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       url: "/",
-      images: [{ url: "/logo.png", width: 300, height: 300, alt: t("common.brand") }],
+      images: [{ url: "/social-logo.png", width: 300, height: 300, alt: t("common.brand") }],
       locale: "en_US",
     },
     twitter: {
       card: "summary",
       title,
       description,
-      images: ["/logo.png"],
+      images: ["/social-logo.png"],
     },
     formatDetection: { telephone: false },
     robots: {
@@ -158,7 +158,7 @@ export default async function RootLayout({
                   className="flex items-center gap-2 font-semibold text-brand-700 dark:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                 >
                   <Image 
-                    src="/logo.png" 
+                    src="/logo-main.png" 
                     alt="MedLens Logo" 
                     width={40}
                     height={40}
