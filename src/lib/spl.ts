@@ -28,7 +28,7 @@ export interface ParsedSpl {
   activeIngredients: Array<{ name: string; strength: string | null }>;
   sections: ParsedSection[];
   /** Sections grouped by priority for patient-friendly display. */
-  patientSections: Array<ParsedSection & { patientTitle: string; hint?: string; priority: number }>;
+  patientSections: Array<ParsedSection & { priority: number }>;
   providerSections: ParsedSection[];
 }
 
@@ -329,20 +329,17 @@ export function parseSplXml(xml: string, setid: string): ParsedSpl {
     if (mapped.provider) {
       providerSections.push(s);
     } else {
-      patientSections.push({
-        ...s,
-        patientTitle: mapped.title,
-        hint: mapped.hint,
-        priority: mapped.priority,
-      });
+      patientSections.push({ ...s, priority: mapped.priority });
     }
   }
   patientSections.sort((a, b) => a.priority - b.priority);
 
-  // Dedupe by patientTitle + content to keep the list clean
+  // Dedupe by dedup group (priority) + content so that codes which map to the
+  // same patient-friendly title (e.g. Rx "Indications" 34067-9 and OTC "Uses"
+  // 50567-7 — both rendered as "What this medicine is for") are collapsed.
   const seen = new Set<string>();
   const dedupedPatientSections = patientSections.filter((s) => {
-    const key = `${s.patientTitle}::${s.preview}`;
+    const key = `${s.priority}::${s.preview}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -364,5 +361,5 @@ export function parseSplXml(xml: string, setid: string): ParsedSpl {
 }
 
 export function patientSectionOrder(): string[] {
-  return PATIENT_SECTIONS.map((s) => s.title);
+  return PATIENT_SECTIONS.map((s) => s.code);
 }

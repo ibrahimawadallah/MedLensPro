@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Camera, CameraOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface DetectedBarcode {
   rawValue: string;
@@ -27,6 +28,7 @@ export function BarcodeScanner() {
   const mountedRef = useRef(true);
   const startingRef = useRef(false);
   const router = useRouter();
+  const t = useTranslations("scan");
   const [supported, setSupported] = useState<boolean | null>(null);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -124,17 +126,20 @@ export function BarcodeScanner() {
     };
   }, [running, router, stop]);
 
-  if (supported === null) return <p className="text-sm text-slate-600">Checking camera support…</p>;
+  if (supported === null) {
+    return <p className="text-sm text-slate-600">{t("checkingSupport")}</p>;
+  }
   if (!supported) {
     return (
       <div className="text-sm text-slate-700 space-y-2">
         <p>
-          Barcode scanning isn&apos;t supported on this browser. You can still
-          type the NDC manually on the{" "}
-          <a className="text-brand-700 underline" href="/ndc">
-            NDC lookup page
-          </a>
-          .
+          {t.rich("notSupported", {
+            link: (chunks) => (
+              <a className="text-brand-700 underline" href="/ndc">
+                {chunks}
+              </a>
+            ),
+          })}
         </p>
       </div>
     );
@@ -147,12 +152,12 @@ export function BarcodeScanner() {
           ref={videoRef}
           playsInline
           muted
-          aria-label="Barcode scanner camera preview"
+          aria-label={t("videoAria")}
           className="w-full h-full object-cover"
         />
         {!running && (
           <div className="absolute inset-0 grid place-items-center text-white/80 text-sm">
-            Camera is off
+            {t("cameraOff")}
           </div>
         )}
       </div>
@@ -163,7 +168,9 @@ export function BarcodeScanner() {
       )}
       {lastDetected && (
         <p className="text-xs text-slate-600">
-          Detected: <span className="font-mono">{lastDetected}</span>
+          {t.rich("detected", {
+            code: lastDetected,
+          })}
         </p>
       )}
       <div className="flex gap-2">
@@ -173,7 +180,7 @@ export function BarcodeScanner() {
             onClick={start}
             className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-3 py-2 text-sm font-medium text-white hover:bg-brand-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
           >
-            <Camera className="h-4 w-4" aria-hidden /> Start camera
+            <Camera className="h-4 w-4" aria-hidden /> {t("start")}
           </button>
         ) : (
           <button
@@ -181,7 +188,7 @@ export function BarcodeScanner() {
             onClick={stop}
             className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
           >
-            <CameraOff className="h-4 w-4" aria-hidden /> Stop
+            <CameraOff className="h-4 w-4" aria-hidden /> {t("stop")}
           </button>
         )}
       </div>

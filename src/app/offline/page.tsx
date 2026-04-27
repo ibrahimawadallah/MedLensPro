@@ -1,16 +1,23 @@
-export const metadata = { title: "Offline" };
+import { getTranslations } from "next-intl/server";
 
-export default function OfflinePage() {
+export async function generateMetadata() {
+  const t = await getTranslations("offline");
+  return { title: t("metaTitle") };
+}
+
+export default async function OfflinePage() {
+  const t = await getTranslations("offline");
   return (
     <div className="max-w-md mx-auto px-4 py-20 text-center space-y-3">
-      <h1 className="text-2xl font-semibold text-slate-900">You&apos;re offline</h1>
+      <h1 className="text-2xl font-semibold text-slate-900">{t("heading")}</h1>
       <p className="text-slate-600">
-        MedLens needs an internet connection to fetch the latest drug labels
-        from DailyMed. Your saved medications on{" "}
-        <a className="text-brand-700 underline" href="/my-meds">
-          My meds
-        </a>{" "}
-        are still available.
+        {t.rich("body", {
+          link: (chunks) => (
+            <a className="text-brand-700 underline" href="/my-meds">
+              {chunks}
+            </a>
+          ),
+        })}
       </p>
     </div>
   );

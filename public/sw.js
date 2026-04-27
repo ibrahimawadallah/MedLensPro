@@ -1,11 +1,18 @@
 /* MedLens service worker
- * Minimal stale-while-revalidate for same-origin GETs so the app is
+ * Enhanced stale-while-revalidate for same-origin GETs so the app is
  * installable as a PWA and opens instantly on repeat visits. No PHI is
  * cached here — only same-origin app shell + static assets.
  */
-const CACHE_NAME = "medlens-v1";
+const CACHE_NAME = "medlens-v2";
 const OFFLINE_URL = "/offline";
-const APP_SHELL = ["/", "/offline", "/manifest.webmanifest", "/icon.svg"];
+const APP_SHELL = [
+  "/",
+  "/offline",
+  "/manifest.webmanifest",
+  "/icon.svg",
+  "/icon-192.png",
+  "/icon-512.png",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

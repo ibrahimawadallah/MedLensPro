@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import {
   dailymedDrugPageUrl,
   dailymedPdfUrl,
@@ -13,7 +14,9 @@ import { splitSplTitle } from "@/lib/format";
 import { SectionAccordion } from "@/components/SectionAccordion";
 import { MediaGallery } from "@/components/MediaGallery";
 import { AddToMyMedsButton } from "@/components/AddToMyMedsButton";
-import { ExternalLink, FileText, Archive } from "lucide-react";
+import { GatedContent } from "@/components/GatedContent";
+import { ExternalLink, FileText, Archive, ChevronLeft, Pill, Package, AlertTriangle } from "lucide-react";
+import { auth } from "@/auth";
 
 export const revalidate = 86400;
 
@@ -22,18 +25,30 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
+  const t = await getTranslations("drug");
   try {
     const xml = await getSplXml(params.setid);
     const parsed = parseSplXml(xml, params.setid);
-    const name = parsed.productName ?? parsed.title ?? "Medication";
+    const name = parsed.productName ?? parsed.title ?? t("fallbackName");
     return { title: name };
   } catch {
-    return { title: "Medication" };
+    return { title: t("fallbackName") };
   }
 }
 
+type SectionMessages = Record<string, { title?: string; hint?: string }> & {
+  additional?: string;
+};
+
 export default async function DrugPage({ params }: Props) {
   const { setid } = params;
+  const t = await getTranslations("drug");
+  const tCommon = await getTranslations("common");
+  const locale = await getLocale();
+  const messages = (await getMessages()) as { sections?: SectionMessages };
+  const sectionMessages: SectionMessages = messages.sections ?? {};
+  const session = await auth();
+
   let xml: string;
   try {
     xml = await getSplXml(setid);
@@ -51,6 +66,25 @@ export default async function DrugPage({ params }: Props) {
   const dosageForm = parts.dosageForm;
   const manufacturer = parsed.manufacturer ?? parts.manufacturer;
 
+  const isAuthenticated = !!session?.user;
+
+  const additionalLabel = sectionMessages.additional ?? "Additional prescribing information";
+  const sectionTitle = (
+    code: string | null | undefined,
+    fallback: string | null | undefined,
+  ) => {
+    if (code) {
+      const entry = sectionMessages[code];
+      if (entry && typeof entry === "object" && entry.title) return entry.title;
+    }
+    return fallback ?? additionalLabel;
+  };
+  const sectionHint = (code: string | null | undefined) => {
+    if (!code) return undefined;
+    const entry = sectionMessages[code];
+    return entry && typeof entry === "object" ? entry.hint : undefined;
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
       <header className="space-y-2">
@@ -58,15 +92,15 @@ export default async function DrugPage({ params }: Props) {
           href="/search"
           className="text-sm text-brand-700 hover:underline inline-flex items-center gap-1"
         >
-          ← Back to search
+          <ChevronLeft className="h-4 w-4 rtl:rotate-180" aria-hidden />
+          {tCommon("backToSearch")}
         </Link>
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
           {displayName}
         </h1>
         {parsed.genericName && parsed.genericName !== displayName && (
           <p className="text-slate-600">
-            Generic name:{" "}
-            <span className="font-medium">{parsed.genericName}</span>
+            {t("genericName", { name: parsed.genericName })}
           </p>
         )}
         <p className="text-sm text-slate-600">
@@ -74,43 +108,36 @@ export default async function DrugPage({ params }: Props) {
         </p>
       </header>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <AddToMyMedsButton
-          med={{
-            setid,
-            title: parsed.title ?? displayName,
-            productName: displayName,
-            genericName: parsed.genericName,
-            manufacturer,
-            ndc: ndcs[0] ?? null,
-          }}
-        />
-        <a
-          href={dailymedDrugPageUrl(setid)}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-        >
-          <ExternalLink className="h-4 w-4" aria-hidden /> Full label on DailyMed
-        </a>
-        <a
-          href={dailymedPdfUrl(setid)}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-        >
-          <FileText className="h-4 w-4" aria-hidden /> PDF
-        </a>
-        <a
-          href={dailymedZipUrl(setid)}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-        >
-          <Archive className="h-4 w-4" aria-hidden /> Full label (ZIP)
-        </a>
+      {/* Basic info available to everyone */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-brand-100 dark:bg-brand-900/30">
+              <Pill className="h-6 w-6 text-brand-600 dark:text-brand-400" />
+            </div>
+            <div>
+              <p className="text-sm text-slate-500">Dosage Form</p>
+              <p className="font-medium text-slate-900">{dosageForm || "N/A"}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-xl bg-brand-100 dark:bg-brand-900/30">
+              <Package className="h-6 w-6 text-brand-600 dark:text-brand-400" />
+            </div>
+            <div>
+              <p className="text-sm text-slate-500">Manufacturer</p>
+              <p className="font-medium text-slate-900">{manufacturer || "N/A"}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {parsed.activeIngredients.length > 0 && (
         <section className="rounded-2xl border border-slate-200 bg-white p-5">
           <h2 className="text-base md:text-lg font-semibold text-slate-900">
-            Active ingredient{parsed.activeIngredients.length > 1 ? "s" : ""}
+            {parsed.activeIngredients.length > 1
+              ? t("activeIngredientMany")
+              : t("activeIngredientOne")}
           </h2>
           <ul className="mt-2 divide-y divide-slate-100">
             {parsed.activeIngredients.map((ing, i) => (
@@ -128,79 +155,137 @@ export default async function DrugPage({ params }: Props) {
         </section>
       )}
 
-      {parsed.patientSections.length === 0 ? (
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
-          We couldn&apos;t extract patient-friendly sections from this label.
-          You can still read the full label on DailyMed using the link above.
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {parsed.patientSections.map((section, idx) => (
-            <SectionAccordion
-              key={`${section.code ?? "s"}-${idx}`}
-              title={section.patientTitle}
-              hint={section.hint}
-              badge={section.code === "34066-1" ? "Boxed warning" : undefined}
-              accent={
-                section.code === "34066-1"
-                  ? "danger"
-                  : section.code === "43685-7" ||
-                      section.code === "34070-3" ||
-                      section.code === "34084-4"
-                    ? "warning"
-                    : "default"
-              }
-              previewHtml={section.preview}
-              bodyHtml={section.html}
-              defaultOpen={idx < 2 || section.code === "34066-1"}
-            />
-          ))}
-        </div>
-      )}
-
-      <MediaGallery media={media} />
-
-      {ndcs.length > 0 && (
-        <section className="rounded-2xl border border-slate-200 bg-white p-5">
-          <h2 className="text-base md:text-lg font-semibold text-slate-900">
-            Package codes (NDC)
-          </h2>
-          <ul className="mt-2 flex flex-wrap gap-2 text-sm">
-            {ndcs.map((ndc) => (
-              <li
-                key={ndc}
-                className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs text-slate-700"
-              >
-                {ndc}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {parsed.providerSections.length > 0 && (
-        <details className="rounded-2xl border border-slate-200 bg-white p-5">
-          <summary className="cursor-pointer text-sm font-medium text-slate-700">
-            Full prescribing information (for healthcare professionals)
-          </summary>
-          <div className="mt-4 space-y-5">
-            {parsed.providerSections.map((section, idx) => (
-              <div
-                key={`${section.code ?? "p"}-${idx}`}
-                className="border-t pt-4"
-              >
-                <h3 className="font-semibold text-slate-800">
-                  {section.title ?? section.displayName ?? "Section"}
-                </h3>
-                <div
-                  className="spl-content text-[14px] text-slate-700"
-                  dangerouslySetInnerHTML={{ __html: section.html }}
-                />
+      {/* Gated content - requires authentication */}
+      <GatedContent
+        isAuthenticated={isAuthenticated}
+        preview={
+          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 rounded-xl bg-amber-100 dark:bg-amber-900/30">
+                <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400" />
               </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-2">Important Safety Information</h3>
+                <p className="text-sm text-slate-600">
+                  This medication contains important usage instructions, warnings, and side effect information that you should review before use.
+                </p>
+              </div>
+            </div>
+          </div>
+        }
+      >
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <AddToMyMedsButton
+            med={{
+              setid,
+              title: parsed.title ?? displayName,
+              productName: displayName,
+              genericName: parsed.genericName,
+              manufacturer,
+              ndc: ndcs[0] ?? null,
+            }}
+          />
+          <a
+            href={dailymedDrugPageUrl(setid)}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            <ExternalLink className="h-4 w-4" aria-hidden /> {t("fullLabel")}
+          </a>
+          <a
+            href={dailymedPdfUrl(setid)}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            <FileText className="h-4 w-4" aria-hidden /> {t("pdf")}
+          </a>
+          <a
+            href={dailymedZipUrl(setid)}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+          >
+            <Archive className="h-4 w-4" aria-hidden /> {t("zip")}
+          </a>
+        </div>
+
+        {locale !== "en" && parsed.patientSections.length > 0 && (
+          <p className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-900 mb-4">
+            {t("contentLanguageNote")}
+          </p>
+        )}
+
+        {parsed.patientSections.length === 0 ? (
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-600">
+            {t("noPatientSections")}
+          </div>
+        ) : (
+          <div className="space-y-3 mb-6">
+            {parsed.patientSections.map((section, idx) => (
+              <SectionAccordion
+                key={`${section.code ?? "s"}-${idx}`}
+                title={sectionTitle(section.code, section.title ?? section.displayName)}
+                hint={sectionHint(section.code)}
+                badge={section.code === "34066-1" ? t("boxedWarning") : undefined}
+                accent={
+                  section.code === "34066-1"
+                    ? "danger"
+                    : section.code === "43685-7" ||
+                        section.code === "34070-3" ||
+                        section.code === "34084-4"
+                      ? "warning"
+                      : "default"
+                }
+                previewHtml={section.preview}
+                bodyHtml={section.html}
+                defaultOpen={idx < 2 || section.code === "34066-1"}
+              />
             ))}
           </div>
-        </details>
-      )}
+        )}
+
+        <MediaGallery media={media} />
+
+        {ndcs.length > 0 && (
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 mb-6">
+            <h2 className="text-base md:text-lg font-semibold text-slate-900">
+              {t("packageCodes")}
+            </h2>
+            <ul className="mt-2 flex flex-wrap gap-2 text-sm">
+              {ndcs.map((ndc) => (
+                <li
+                  key={ndc}
+                  className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs text-slate-700"
+                >
+                  {ndc}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {parsed.providerSections.length > 0 && (
+          <details className="rounded-2xl border border-slate-200 bg-white p-5">
+            <summary className="cursor-pointer text-sm font-medium text-slate-700">
+              {t("fullPrescribing")}
+            </summary>
+            <div className="mt-4 space-y-5">
+              {parsed.providerSections.map((section, idx) => (
+                <div
+                  key={`${section.code ?? "p"}-${idx}`}
+                  className="border-t pt-4"
+                >
+                  <h3 className="font-semibold text-slate-800">
+                    {section.title ?? section.displayName ?? additionalLabel}
+                  </h3>
+                  <div
+                    className="spl-content text-[14px] text-slate-700"
+                    dangerouslySetInnerHTML={{ __html: section.html }}
+                  />
+                </div>
+              ))}
+            </div>
+          </details>
+        )}
+      </GatedContent>
     </div>
   );
 }

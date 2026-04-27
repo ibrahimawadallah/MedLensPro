@@ -33,10 +33,12 @@ export function SectionAccordion({
         accent === "danger" && "border-red-300 bg-red-50/60",
         accent === "default" && "border-slate-200",
       )}
+      aria-labelledby={bodyId + "-title"}
     >
       <h2 className="m-0">
         <button
           type="button"
+          id={bodyId + "-title"}
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls={bodyId}

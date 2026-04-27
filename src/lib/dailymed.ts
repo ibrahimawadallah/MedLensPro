@@ -3,6 +3,8 @@
  * Docs: https://dailymed.nlm.nih.gov/dailymed/app-support-web-services.cfm
  */
 
+import { cache } from "./cache";
+
 export const DAILYMED_BASE = "https://dailymed.nlm.nih.gov/dailymed";
 export const DAILYMED_API = `${DAILYMED_BASE}/services/v2`;
 
@@ -83,13 +85,19 @@ export async function searchDrugNames(
   drugName: string,
   opts: { nameType?: NameType; pageSize?: number; page?: number } = {},
 ): Promise<Paged<DrugNameHit>> {
+  const cacheKey = `drugnames:${drugName}:${opts.nameType ?? "both"}:${opts.pageSize ?? 25}:${opts.page ?? 1}`;
+  const cached = cache.get<Paged<DrugNameHit>>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/drugnames.json${qs({
     drug_name: drugName,
     name_type: opts.nameType ?? "both",
     pagesize: opts.pageSize ?? 25,
     page: opts.page ?? 1,
   })}`;
-  return getJson<Paged<DrugNameHit>>(url, { revalidate: 60 * 10 });
+  const result = await getJson<Paged<DrugNameHit>>(url, { revalidate: 60 * 10 });
+  cache.set(cacheKey, result, 10 * 60 * 1000); // Cache for 10 minutes
+  return result;
 }
 
 export async function searchSpls(
@@ -101,6 +109,10 @@ export async function searchSpls(
     manufacturer?: string;
   } = {},
 ): Promise<Paged<SplHit>> {
+  const cacheKey = `spls:${drugName}:${opts.nameType ?? "both"}:${opts.pageSize ?? 25}:${opts.page ?? 1}:${opts.manufacturer ?? ""}`;
+  const cached = cache.get<Paged<SplHit>>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/spls.json${qs({
     drug_name: drugName,
     name_type: opts.nameType ?? "both",
@@ -108,47 +120,73 @@ export async function searchSpls(
     page: opts.page ?? 1,
     manufacturer: opts.manufacturer,
   })}`;
-  return getJson<Paged<SplHit>>(url, { revalidate: 60 * 10 });
+  const result = await getJson<Paged<SplHit>>(url, { revalidate: 60 * 10 });
+  cache.set(cacheKey, result, 10 * 60 * 1000); // Cache for 10 minutes
+  return result;
 }
 
 export async function findSplsByNdc(
   ndc: string,
   opts: { pageSize?: number; page?: number } = {},
 ): Promise<Paged<SplHit>> {
+  const cacheKey = `ndc:${ndc}:${opts.pageSize ?? 10}:${opts.page ?? 1}`;
+  const cached = cache.get<Paged<SplHit>>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/spls.json${qs({
     ndc,
     pagesize: opts.pageSize ?? 10,
     page: opts.page ?? 1,
   })}`;
-  return getJson<Paged<SplHit>>(url, { revalidate: 60 * 10 });
+  const result = await getJson<Paged<SplHit>>(url, { revalidate: 60 * 10 });
+  cache.set(cacheKey, result, 10 * 60 * 1000); // Cache for 10 minutes
+  return result;
 }
 
 export async function getSplNdcs(setid: string): Promise<string[]> {
+  const cacheKey = `splndcs:${setid}`;
+  const cached = cache.get<string[]>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/spls/${encodeURIComponent(setid)}/ndcs.json`;
   interface NdcResp {
     data: { ndcs?: Array<{ ndc: string } | string> };
   }
   const body = await getJson<NdcResp>(url, { revalidate: 60 * 60 * 24 });
   const rows = body?.data?.ndcs ?? [];
-  return rows
+  const result = rows
     .map((row) =>
       typeof row === "string" ? row : row && typeof row === "object" && "ndc" in row ? row.ndc : null,
     )
     .filter((x): x is string => Boolean(x));
+  cache.set(cacheKey, result, 60 * 60 * 24 * 1000); // Cache for 24 hours
+  return result;
 }
 
 export async function getSplMedia(setid: string): Promise<MediaItem[]> {
+  const cacheKey = `splmedia:${setid}`;
+  const cached = cache.get<MediaItem[]>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/spls/${encodeURIComponent(setid)}/media.json`;
   interface MediaResp {
     data: { media?: MediaItem[] };
   }
   const body = await getJson<MediaResp>(url, { revalidate: 60 * 60 * 24 });
-  return body?.data?.media ?? [];
+  const result = body?.data?.media ?? [];
+  cache.set(cacheKey, result, 60 * 60 * 24 * 1000); // Cache for 24 hours
+  return result;
 }
 
 export async function getSplXml(setid: string): Promise<string> {
+  const cacheKey = `splxml:${setid}`;
+  const cached = cache.get<string>(cacheKey);
+  if (cached) return cached;
+
   const url = `${DAILYMED_API}/spls/${encodeURIComponent(setid)}.xml`;
-  return getText(url, { revalidate: 60 * 60 * 24 });
+  const result = await getText(url, { revalidate: 60 * 60 * 24 });
+  cache.set(cacheKey, result, 60 * 60 * 24 * 1000); // Cache for 24 hours
+  return result;
 }
 
 export function dailymedDrugPageUrl(setid: string): string {

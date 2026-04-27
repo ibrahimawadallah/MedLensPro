@@ -1,5 +1,5 @@
 /**
- * Local-only persistence for the patient's saved medications and recent
+ * Local-only persistence for the patient&apos;s saved medications and recent
  * searches. No data ever leaves the browser — this is intentional so the app
  * does not handle PHI on any server.
  */
