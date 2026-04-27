@@ -178,6 +178,12 @@ export default async function RootLayout({
                     <Search className="h-4 w-4" aria-hidden /> {t("common.search")}
                   </Link>
                   <Link
+                    href="/uae"
+                    className="hidden sm:flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+                  >
+                    UAE Drugs
+                  </Link>
+                  <Link
                     href="/my-meds"
                     className="hidden sm:flex items-center gap-1 text-slate-700 dark:text-slate-300 hover:text-brand-700 dark:hover:text-brand-400 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
                   >
